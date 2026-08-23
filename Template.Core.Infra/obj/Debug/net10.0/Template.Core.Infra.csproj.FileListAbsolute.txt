@@ -1,0 +1,17 @@
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Infra/bin/Debug/net10.0/Template.Core.Infra.deps.json
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Infra/bin/Debug/net10.0/Template.Core.Infra.dll
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Infra/bin/Debug/net10.0/Template.Core.Infra.pdb
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Infra/bin/Debug/net10.0/Template.Core.Domain.dll
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Infra/bin/Debug/net10.0/Template.Core.Domain.pdb
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Infra/bin/Debug/net10.0/Template.Core.Domain.xml
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Infra/obj/Debug/net10.0/Template.Core.Infra.csproj.AssemblyReference.cache
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Infra/obj/Debug/net10.0/Template.Core.Infra.GeneratedMSBuildEditorConfig.editorconfig
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Infra/obj/Debug/net10.0/Template.Core.Infra.AssemblyInfoInputs.cache
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Infra/obj/Debug/net10.0/Template.Core.Infra.AssemblyInfo.cs
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Infra/obj/Debug/net10.0/Template.Core.Infra.csproj.CoreCompileInputs.cache
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Infra/obj/Debug/net10.0/Template.Core.Infra.sourcelink.json
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Infra/obj/Debug/net10.0/Template.EAD2BB34.Up2Date
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Infra/obj/Debug/net10.0/Template.Core.Infra.dll
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Infra/obj/Debug/net10.0/refint/Template.Core.Infra.dll
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Infra/obj/Debug/net10.0/Template.Core.Infra.pdb
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Infra/obj/Debug/net10.0/ref/Template.Core.Infra.dll

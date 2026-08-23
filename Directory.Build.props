@@ -1,0 +1,16 @@
+<Project>
+
+  <!--
+    Fonte única da versão do produto (backend e frontend).
+
+    Todos os projetos sob backend/ herdam <Version> daqui — nenhum .csproj deve
+    declarar a sua própria. O frontend/package.json espelha este valor, e
+    scripts/check-version.mjs falha o CI se os dois divergirem.
+
+    No PR de release, o bump acontece aqui e no package.json — em mais lugar nenhum.
+  -->
+  <PropertyGroup>
+    <Version>0.0.2</Version>
+  </PropertyGroup>
+
+</Project>

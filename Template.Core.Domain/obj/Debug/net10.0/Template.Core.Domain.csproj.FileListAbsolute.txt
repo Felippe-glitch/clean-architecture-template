@@ -1,0 +1,14 @@
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/bin/Debug/net10.0/Template.Core.Domain.deps.json
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/bin/Debug/net10.0/Template.Core.Domain.dll
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/bin/Debug/net10.0/Template.Core.Domain.pdb
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/bin/Debug/net10.0/Template.Core.Domain.xml
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/obj/Debug/net10.0/Template.Core.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/obj/Debug/net10.0/Template.Core.Domain.AssemblyInfoInputs.cache
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/obj/Debug/net10.0/Template.Core.Domain.AssemblyInfo.cs
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/obj/Debug/net10.0/Template.Core.Domain.csproj.CoreCompileInputs.cache
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/obj/Debug/net10.0/Template.Core.Domain.sourcelink.json
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/obj/Debug/net10.0/Template.Core.Domain.dll
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/obj/Debug/net10.0/refint/Template.Core.Domain.dll
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/obj/Debug/net10.0/Template.Core.Domain.xml
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/obj/Debug/net10.0/Template.Core.Domain.pdb
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/obj/Debug/net10.0/ref/Template.Core.Domain.dll

@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Template.Core.Domain</name>
+    </assembly>
+    <members>
+        <member name="T:Template.Core.Domain.Usuarios.Command.UsuarioRegistrarCommand">
+            <summary>
+            Comando de registro de usuário. A senha já chega <b>hasheada</b>
+            (a camada de aplicação faz o hash antes de acionar o domínio).
+            </summary>
+        </member>
+        <member name="T:Template.Core.Domain.Usuarios.Enums.Permissao">
+            <summary>
+            Permissões granulares para acesso aos recursos do sistema (Policy-based Authorization).
+            </summary>
+        </member>
+        <member name="T:Template.Core.Domain.Usuarios.Enums.PermissoesPorRole">
+            <summary>
+            Mapeamento de permissões granulares atribuídas a cada papel (Role) do sistema.
+            </summary>
+        </member>
+        <member name="M:Template.Core.Domain.Usuarios.Enums.PermissoesPorRole.ObterPermissoes(Template.Core.Domain.Usuarios.Enums.UsuarioRoleEnum)">
+            <remarks>
+            Devolve <see cref="T:System.Collections.Generic.IReadOnlySet`1"/> de proposito: o conjunto retornado e a propria matriz de
+            autorizacao do processo, e expo-la como <c>HashSet</c> deixaria qualquer chamador muta-la.
+            </remarks>
+        </member>
+        <member name="T:Template.Core.Domain.Usuarios.Enums.RoleHierarquia">
+            <summary>
+            Hierarquia de gestao de contas. Cada papel so pode criar/gerenciar usuarios
+            cujos papeis estejam estritamente "abaixo" dele:
+            ADMIN (unico, do seed) gerencia apenas DEVELOPER; DEVELOPER gerencia
+            SECRETARIA, PASTOR e MIDIA; os demais nao gerenciam usuarios.
+            </summary>
+        </member>
+        <member name="M:Template.Core.Domain.Usuarios.Enums.RoleHierarquia.PodeGerenciar(Template.Core.Domain.Usuarios.Enums.UsuarioRoleEnum,Template.Core.Domain.Usuarios.Enums.UsuarioRoleEnum)">
+            <summary>Indica se <paramref name="ator"/> pode criar/gerenciar uma conta com o papel <paramref name="alvo"/>.</summary>
+        </member>
+    </members>
+</doc>

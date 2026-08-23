@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Template.Core.App</name>
+    </assembly>
+    <members>
+        <member name="T:Template.Core.App.Auth.DataTransfer.RefreshRequest">
+            <summary>Corpo para renovar (refresh) a sessão. Não existe logout — ver ADR 08 e o achado F4.</summary>
+        </member>
+        <member name="M:Template.Core.App.Auth.IJwtTokenGenerator.Gerar(Template.Core.Domain.Usuarios.Entity.Usuario)">
+            <summary>Gera o access token (curto) e devolve o token e o instante de expiração (UTC).</summary>
+        </member>
+        <member name="M:Template.Core.App.Auth.IJwtTokenGenerator.GerarRefresh(Template.Core.Domain.Usuarios.Entity.Usuario)">
+            <summary>Gera o refresh token (JWT longo, com audience de refresh) e sua expiração (UTC).</summary>
+        </member>
+        <member name="M:Template.Core.App.Auth.IJwtTokenGenerator.ValidarRefreshToken(System.String)">
+            <summary>Valida um refresh token statelessly. Devolve o Id do usuário se válido, ou <c>null</c>.</summary>
+        </member>
+        <member name="T:Template.Core.App.Auth.JwtSettings">
+            <summary>Parâmetros de assinatura/validação do JWT (seção <c>Jwt</c> da configuração).</summary>
+        </member>
+        <member name="P:Template.Core.App.Auth.JwtSettings.ExpiraMinutos">
+            <summary>Tempo de vida do access token, em minutos (curto; padrão: 15).</summary>
+        </member>
+        <member name="P:Template.Core.App.Auth.JwtSettings.RefreshExpiraDias">
+            <summary>Tempo de vida do refresh token, em dias (padrão: 7).</summary>
+        </member>
+        <member name="P:Template.Core.App.Auth.JwtSettings.RefreshAudience">
+            <summary>
+            Audience do refresh token — distinta do access de propósito. O middleware JwtBearer
+            valida <see cref="P:Template.Core.App.Auth.JwtSettings.Audience"/>, então um refresh (com esta audience) é rejeitado nas
+            rotas protegidas, impedindo usar o token longo como bearer.
+            </summary>
+        </member>
+        <member name="F:Template.Core.App.Auth.JwtSettings.TamanhoMinimoChaveBytes">
+            <summary>
+            Mínimo de bytes da chave de assinatura. É o tamanho do bloco do HMAC-SHA256: uma
+            chave menor não acrescenta entropia além do próprio comprimento e enfraquece a
+            assinatura.
+            </summary>
+        </member>
+        <member name="P:Template.Core.App.Auth.JwtSettings.TamanhoChaveBytes">
+            <summary>Tamanho da chave em bytes UTF-8 — a mesma codificação usada para assinar.</summary>
+        </member>
+        <member name="T:Template.Core.App.Auth.LoginLockoutSettings">
+            <summary>
+            Lockout de login por conta (seção <c>RateLimit:Auth</c> da configuração). Defesa em
+            profundidade sobre o rate limit por IP: aquele depende da topologia do proxy, que pode
+            mudar sem aviso; este não depende de IP nenhum.
+            </summary>
+        </member>
+        <member name="P:Template.Core.App.Auth.LoginLockoutSettings.LockoutFalhas">
+            <summary>Falhas consecutivas na mesma conta antes de bloquear (padrão: 5).</summary>
+        </member>
+        <member name="P:Template.Core.App.Auth.LoginLockoutSettings.LockoutMinutos">
+            <summary>Duração do bloqueio, contada a partir da última falha (padrão: 15 min).</summary>
+        </member>
+        <member name="F:Template.Core.App.Auth.Service.AuthAppService.CredenciaisInvalidas">
+            <summary>
+            Mensagem única para credencial errada, conta inativa, conta inexistente e lockout.
+            Se o lockout tivesse mensagem própria, viraria oráculo de enumeração de contas.
+            </summary>
+        </member>
+        <member name="M:Template.Core.App.Auth.Service.AuthAppService.ChaveLockout(System.String)">
+            <summary>Chaveado pelo login normalizado — o mesmo critério do lookup, senão variar a caixa burla o lockout.</summary>
+        </member>
+        <member name="M:Template.Core.App.Auth.Service.AuthAppService.RegistrarFalha(System.String,System.Int32)">
+            <summary>
+            Renova a janela a cada falha: o bloqueio dura <c>LockoutMinutos</c> a partir da
+            última tentativa, então insistir só prolonga o próprio bloqueio.
+            </summary>
+        </member>
+        <member name="M:Template.Core.App.Auth.Service.AuthAppService.EmitirSessao(Template.Core.Domain.Usuarios.Entity.Usuario)">
+            <summary>Emite um novo par access + refresh (ambos JWT, stateless).</summary>
+        </member>
+        <member name="M:Template.Core.App.Auth.Service.IAuthAppService.RefreshAsync(System.String,System.Threading.CancellationToken)">
+            <summary>Renova o par access/refresh a partir de um refresh token válido (stateless).</summary>
+        </member>
+        <member name="T:Template.Core.App.Common.IPasswordHasher">
+            <summary>Hash e verificação de senhas (implementação atual: BCrypt).</summary>
+        </member>
+        <member name="P:Template.Core.App.Usuarios.DataTransfer.UsuarioRegistrarRequest.Role">
+            <summary>
+            Papel do usuário. Nullable de propósito: em enum não-nullable o <c>[Required]</c> é inócuo
+            (o valor default já satisfaz a validação) e omitir o campo criava silenciosamente um
+            <see cref="F:Template.Core.Domain.Usuarios.Enums.UsuarioRoleEnum.ADMIN"/>, que é o membro 0 do enum — achado F7 do laudo.
+            </summary>
+        </member>
+    </members>
+</doc>

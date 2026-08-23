@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "dgSpecHash": "9NpqeDu4y3w=",
+  "success": true,
+  "projectFilePath": "/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Infra/Template.Core.Infra.csproj",
+  "expectedPackageFiles": [
+    "/home/felippestein/.nuget/packages/antlr3.runtime/3.5.1/antlr3.runtime.3.5.1.nupkg.sha512",
+    "/home/felippestein/.nuget/packages/fluentnhibernate/3.4.1/fluentnhibernate.3.4.1.nupkg.sha512",
+    "/home/felippestein/.nuget/packages/iesi.collections/4.0.4/iesi.collections.4.0.4.nupkg.sha512",
+    "/home/felippestein/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/10.0.0/microsoft.extensions.dependencyinjection.abstractions.10.0.0.nupkg.sha512",
+    "/home/felippestein/.nuget/packages/microsoft.extensions.logging.abstractions/10.0.0/microsoft.extensions.logging.abstractions.10.0.0.nupkg.sha512",
+    "/home/felippestein/.nuget/packages/microsoft.netcore.platforms/1.1.0/microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "/home/felippestein/.nuget/packages/microsoft.win32.systemevents/6.0.0/microsoft.win32.systemevents.6.0.0.nupkg.sha512",
+    "/home/felippestein/.nuget/packages/netstandard.library/1.6.1/netstandard.library.1.6.1.nupkg.sha512",
+    "/home/felippestein/.nuget/packages/nhibernate/5.4.9/nhibernate.5.4.9.nupkg.sha512",
+    "/home/felippestein/.nuget/packages/npgsql/10.0.3/npgsql.10.0.3.nupkg.sha512",
+    "/home/felippestein/.nuget/packages/remotion.linq/2.2.0/remotion.linq.2.2.0.nupkg.sha512",
+    "/home/felippestein/.nuget/packages/remotion.linq.eagerfetching/2.2.0/remotion.linq.eagerfetching.2.2.0.nupkg.sha512",
+    "/home/felippestein/.nuget/packages/system.configuration.configurationmanager/6.0.0/system.configuration.configurationmanager.6.0.0.nupkg.sha512",
+    "/home/felippestein/.nuget/packages/system.drawing.common/6.0.0/system.drawing.common.6.0.0.nupkg.sha512",
+    "/home/felippestein/.nuget/packages/system.security.cryptography.protecteddata/6.0.0/system.security.cryptography.protecteddata.6.0.0.nupkg.sha512",
+    "/home/felippestein/.nuget/packages/system.security.permissions/6.0.0/system.security.permissions.6.0.0.nupkg.sha512",
+    "/home/felippestein/.nuget/packages/system.windows.extensions/6.0.0/system.windows.extensions.6.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

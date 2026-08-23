@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/Template.Core.CrossCutting/">
+    <Project Path="Template.Core.CrossCutting/Template.CrossCutting.csproj" />
+  </Folder>
+  <Folder Name="/Template.Core.Domain.Tests/">
+    <Project Path="Template.Core.Domain.Tests/Template.Core.Domain.Tests.csproj" />
+  </Folder>
+  <Project Path="Template.Core.Api/Template.Core.Api.csproj" />
+  <Project Path="Template.Core.App/Template.Core.App.csproj" />
+  <Project Path="Template.Core.Domain/Template.Core.Domain.csproj" />
+  <Project Path="Template.Core.Infra/Template.Core.Infra.csproj" />
+  <Project Path="Template.Core.IoC/Template.Core.IoC.csproj" />
+</Solution>
