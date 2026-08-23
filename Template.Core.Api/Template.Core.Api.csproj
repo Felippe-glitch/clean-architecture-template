@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <Title>Template.Api</Title>
+    <!-- <Version> vem de backend/Directory.Build.props — não declarar aqui. -->
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <InterceptorsNamespaces>$(InterceptorsNamespaces);Microsoft.AspNetCore.OpenApi.Generated</InterceptorsNamespaces>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <UserSecretsId>ea4e1081-7b78-4acb-bc57-1116ff1e6aac</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Referenciado diretamente na API para que o source generator de comentarios
+         XML do OpenAPI rode nesta compilacao (assets de analyzer nao fluem por ProjectReference). -->
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.10" />
+    <!-- Sobrepoe o transitivo 2.0.0 (CVE-2026-49451 / GHSA-v5pm-xwqc-g5wc). Corrigido em 2.7.5+. -->
+    <PackageReference Include="Microsoft.OpenApi" Version="2.7.5" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Template.Core.Domain\Template.Core.Domain.csproj" />
+    <ProjectReference Include="..\Template.Core.App\Template.Core.App.csproj" />
+    <ProjectReference Include="..\Template.Core.IoC\Template.Core.IoC.csproj" />
+  </ItemGroup>
+
+</Project>
