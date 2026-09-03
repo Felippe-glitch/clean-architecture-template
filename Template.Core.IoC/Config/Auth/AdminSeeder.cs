@@ -43,7 +43,7 @@ public static class AdminSeeder
         }
         catch (Exception ex)
         {
-            logger.LogWarning(ex, "Could not seed the initial admin. Has migration ATOS-020 (table 'users') been applied?");
+            logger.LogWarning(ex, "Could not seed the initial admin. Is the database reachable and up to date with Template.Core.Infra/Migrations (table 'users')?");
         }
     }
 }

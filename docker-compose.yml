@@ -1,0 +1,82 @@
+name: template-core
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: template-core-api
+    ports:
+      - "5157:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+
+      # --- PostgreSQL (binds onto Databases:PostgreSql in appsettings) ---
+      # Host is the Postgres *service* name below — Docker's internal DNS
+      # resolves it to the container's IP on the "template-core-net" network.
+      Databases__PostgreSql__Host: postgres
+      Databases__PostgreSql__Database: template_core
+      Databases__PostgreSql__Username: postgres
+      Databases__PostgreSql__Password: postgres
+      Databases__PostgreSql__SSLMode: Disable
+      Databases__PostgreSql__ChannelBinding: Disable
+      Databases__PostgreSql__Schema: public
+
+      # --- Redis ---
+      # Not consumed by the app yet (no IDistributedCache/StackExchange.Redis
+      # wiring in Template.Core.IoC as of this writing) — provided here so the
+      # container is reachable at Host=redis the moment that wiring is added.
+      ConnectionStrings__Redis: redis:6379
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - template-core-net
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:17-alpine
+    container_name: template-core-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: template_core
+    ports:
+      - "5432:5432"
+    volumes:
+      - template-core-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d template_core"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - template-core-net
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: template-core-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - template-core-redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - template-core-net
+    restart: unless-stopped
+
+networks:
+  template-core-net:
+    driver: bridge
+
+volumes:
+  template-core-postgres-data:
+  template-core-redis-data:

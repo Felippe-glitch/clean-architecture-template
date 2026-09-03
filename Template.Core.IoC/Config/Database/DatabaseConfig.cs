@@ -30,4 +30,12 @@ public static class DatabaseConfig
 
         return services;
     }
+
+    public static async Task MigrateDatabaseAsync(this IServiceProvider provider, CancellationToken cancellationToken = default)
+    {
+        using IServiceScope scope = provider.CreateScope();
+        TemplateDbContext dbContext = scope.ServiceProvider.GetRequiredService<TemplateDbContext>();
+
+        await dbContext.Database.MigrateAsync(cancellationToken);
+    }
 }

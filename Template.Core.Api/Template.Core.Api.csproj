@@ -19,6 +19,13 @@
     <!-- Overrides the transitive 2.0.0 (CVE-2026-49451 / GHSA-v5pm-xwqc-g5wc). Fixed in 2.7.5+. -->
     <PackageReference Include="Microsoft.OpenApi" Version="2.7.5" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.3" />
+    <!-- Design-time only: the EF Core CLI requires the *startup* project to reference this
+         package to run `dotnet ef migrations add`/`database update` (TemplateDbContext itself
+         lives in Infra, which Api never references at runtime — see TemplateDbContextFactory). -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.11">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

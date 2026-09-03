@@ -20,3 +20,5 @@
 /home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Infra/bin/Debug/net10.0/Template.Core.App.xml
 /home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Infra/bin/Debug/net10.0/Template.CrossCutting.dll
 /home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Infra/bin/Debug/net10.0/Template.CrossCutting.pdb
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Infra/bin/Debug/net10.0/Template.Core.Infra.runtimeconfig.json
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Infra/obj/Debug/net10.0/Template.Core.Infra.genruntimeconfig.cache

@@ -8,7 +8,19 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.11" />
+    <!-- Pinned explicitly (not just left to float in from Npgsql's own floor of 10.0.4):
+         Design below is a PrivateAssets="all" reference, so its own 10.0.11 requirement on
+         this package never flows to projects referencing Infra (IoC, transitively Api) —
+         without this line NuGet resolves those consumers against 10.0.4 while Infra.dll is
+         actually built against 10.0.11, producing an MSB3277 version-conflict warning. -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.11" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
+    <!-- Design-time only: powers `dotnet ef migrations add/database update` via
+         TemplateDbContextFactory below. Not needed at runtime. -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.11">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <PropertyGroup>

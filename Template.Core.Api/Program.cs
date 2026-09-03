@@ -5,6 +5,7 @@ using Template.Core.Api.Config;
 using Template.Core.Api.Middleware;
 using Template.Core.IoC.Config;
 using Template.Core.IoC.Config.Auth;
+using Template.Core.IoC.Config.Database;
 using Template.Core.IoC.Scalar.Config;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -69,6 +70,7 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapHealthChecks("/health").AllowAnonymous();
 
+await app.Services.MigrateDatabaseAsync();
 await app.Services.SeedAdminAsync(configuration);
 
 try

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "VXRiid+I1Hw=",
+  "dgSpecHash": "0+I+5yIV7Pw=",
   "success": true,
   "projectFilePath": "/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.IoC/Template.Core.IoC.csproj",
   "expectedPackageFiles": [
@@ -19,7 +19,7 @@
     "/home/felippestein/.nuget/packages/microsoft.entityframeworkcore/10.0.11/microsoft.entityframeworkcore.10.0.11.nupkg.sha512",
     "/home/felippestein/.nuget/packages/microsoft.entityframeworkcore.abstractions/10.0.11/microsoft.entityframeworkcore.abstractions.10.0.11.nupkg.sha512",
     "/home/felippestein/.nuget/packages/microsoft.entityframeworkcore.analyzers/10.0.11/microsoft.entityframeworkcore.analyzers.10.0.11.nupkg.sha512",
-    "/home/felippestein/.nuget/packages/microsoft.entityframeworkcore.relational/10.0.4/microsoft.entityframeworkcore.relational.10.0.4.nupkg.sha512",
+    "/home/felippestein/.nuget/packages/microsoft.entityframeworkcore.relational/10.0.11/microsoft.entityframeworkcore.relational.10.0.11.nupkg.sha512",
     "/home/felippestein/.nuget/packages/microsoft.extensions.dependencymodel/10.0.0/microsoft.extensions.dependencymodel.10.0.0.nupkg.sha512",
     "/home/felippestein/.nuget/packages/microsoft.identitymodel.abstractions/8.19.1/microsoft.identitymodel.abstractions.8.19.1.nupkg.sha512",
     "/home/felippestein/.nuget/packages/microsoft.identitymodel.jsonwebtokens/8.19.1/microsoft.identitymodel.jsonwebtokens.8.19.1.nupkg.sha512",
