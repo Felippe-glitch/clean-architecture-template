@@ -2,13 +2,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Template.Core.Domain\Template.Core.Domain.csproj" />
-    <ProjectReference Include="..\Template.Core.Domain\Template.Core.Domain.csproj" />
+    <ProjectReference Include="..\Template.Core.App\Template.Core.App.csproj" />
+    <ProjectReference Include="..\Template.Core.CrossCutting\Template.CrossCutting.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentNHibernate" Version="3.4.1" />
-    <PackageReference Include="NHibernate" Version="5.4.9" />
-    <PackageReference Include="Npgsql" Version="10.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.11" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
   </ItemGroup>
 
   <PropertyGroup>

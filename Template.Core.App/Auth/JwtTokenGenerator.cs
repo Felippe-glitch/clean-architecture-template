@@ -4,84 +4,84 @@ using System.Text;
 
 using Microsoft.IdentityModel.Tokens;
 
-using Template.Core.Domain.Usuarios.Entity;
+using Template.Core.Domain.Users.Entity;
 using System;
 
 namespace Template.Core.App.Auth;
 
 public class JwtTokenGenerator(JwtSettings settings) : IJwtTokenGenerator
 {
-    private SymmetricSecurityKey Chave => new(Encoding.UTF8.GetBytes(settings.Key));
+    private SymmetricSecurityKey SigningKey => new(Encoding.UTF8.GetBytes(settings.Key));
 
-    public (string Token, DateTime ExpiraEm) Gerar(Usuario usuario)
+    public (string Token, DateTime ExpiresAt) Generate(User user)
     {
-        DateTime expiraEm = DateTime.UtcNow.AddMinutes(settings.ExpiraMinutos);
+        DateTime expiresAt = DateTime.UtcNow.AddMinutes(settings.ExpirationMinutes);
 
         Claim[] claims =
         [
-            new(JwtRegisteredClaimNames.Sub, usuario.Id.ToString()),
-            new(ClaimTypes.Role, usuario.Role.ToString()),
+            new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new(ClaimTypes.Role, user.Role.ToString()),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         ];
 
-        return (Escrever(claims, settings.Audience, expiraEm), expiraEm);
+        return (WriteToken(claims, settings.Audience, expiresAt), expiresAt);
     }
 
-    public (string Token, DateTime ExpiraEm) GerarRefresh(Usuario usuario)
+    public (string Token, DateTime ExpiresAt) GenerateRefresh(User user)
     {
-        DateTime expiraEm = DateTime.UtcNow.AddDays(settings.RefreshExpiraDias);
+        DateTime expiresAt = DateTime.UtcNow.AddDays(settings.RefreshExpirationDays);
 
-        // Refresh carrega o mínimo: só identifica o usuário. A audience distinta o separa do access.
+        // Refresh carries the bare minimum: just the user's identity. The distinct audience separates it from the access token.
         Claim[] claims =
         [
-            new(JwtRegisteredClaimNames.Sub, usuario.Id.ToString()),
+            new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         ];
 
-        return (Escrever(claims, settings.RefreshAudience, expiraEm), expiraEm);
+        return (WriteToken(claims, settings.RefreshAudience, expiresAt), expiresAt);
     }
 
-    public int? ValidarRefreshToken(string refreshToken)
+    public int? ValidateRefreshToken(string refreshToken)
     {
-        TokenValidationParameters parametros = new()
+        TokenValidationParameters parameters = new()
         {
             ValidateIssuer = true,
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             ValidIssuer = settings.Issuer,
-            ValidAudience = settings.RefreshAudience, // rejeita access tokens (audience diferente)
-            IssuerSigningKey = Chave,
+            ValidAudience = settings.RefreshAudience, // rejects access tokens (different audience)
+            IssuerSigningKey = SigningKey,
             ClockSkew = TimeSpan.FromSeconds(30),
-            ValidAlgorithms = [SecurityAlgorithms.HmacSha256], // só o algoritmo que emitimos
+            ValidAlgorithms = [SecurityAlgorithms.HmacSha256], // only the algorithm we issue
         };
 
         try
         {
             ClaimsPrincipal principal = new JwtSecurityTokenHandler()
-                .ValidateToken(refreshToken, parametros, out _);
+                .ValidateToken(refreshToken, parameters, out _);
 
             string? sub = principal.FindFirstValue(JwtRegisteredClaimNames.Sub)
-                          ?? principal.FindFirstValue(ClaimTypes.NameIdentifier); // MapInboundClaims pode remapear 'sub'
+                          ?? principal.FindFirstValue(ClaimTypes.NameIdentifier); // MapInboundClaims may remap 'sub'
 
             return int.TryParse(sub, out int id) ? id : null;
         }
         catch
         {
-            return null; // assinatura/expiração/audience inválidas
+            return null; // invalid signature/expiration/audience
         }
     }
 
-    private string Escrever(Claim[] claims, string audience, DateTime expiraEm)
+    private string WriteToken(Claim[] claims, string audience, DateTime expiresAt)
     {
-        SigningCredentials credenciais = new(Chave, SecurityAlgorithms.HmacSha256);
+        SigningCredentials credentials = new(SigningKey, SecurityAlgorithms.HmacSha256);
 
         JwtSecurityToken token = new(
             issuer: settings.Issuer,
             audience: audience,
             claims: claims,
-            expires: expiraEm,
-            signingCredentials: credenciais);
+            expires: expiresAt,
+            signingCredentials: credentials);
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }

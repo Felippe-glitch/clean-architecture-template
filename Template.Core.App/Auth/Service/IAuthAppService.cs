@@ -8,6 +8,6 @@ public interface IAuthAppService
 {
     Task<LoginResponse> LoginAsync(LoginRequest request, CancellationToken cancellationToken = default);
 
-    /// <summary>Renova o par access/refresh a partir de um refresh token válido (stateless).</summary>
+    /// <summary>Renews the access/refresh pair from a valid refresh token (stateless).</summary>
     Task<LoginResponse> RefreshAsync(string refreshToken, CancellationToken cancellationToken = default);
 }

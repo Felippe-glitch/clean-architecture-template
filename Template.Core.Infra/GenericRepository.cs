@@ -1,83 +1,82 @@
 using System.Linq.Expressions;
 using System.Reflection;
-using NHibernate;
-using NHibernate.Linq;
+
+using Microsoft.EntityFrameworkCore;
+
+using Template.Core.CrossCutting.Pagination;
 using Template.Core.Domain;
-using Template.Core.Domain.Abstractions;
 
 namespace Template.Core.Infra;
 
-public abstract class GenericRepository<T>(ISession Session) : IGenericRepository<T> where T : class
+public abstract class GenericRepository<T>(TemplateDbContext Context) : IGenericRepository<T> where T : class
 {
-    public readonly ISession _session = Session;
+    protected readonly TemplateDbContext _context = Context;
 
-    public async Task<T> RecuperarAsync(int id, CancellationToken cancellationToken = default)
+    public async Task<T> GetAsync(int id, CancellationToken cancellationToken = default)
+        => await _context.Set<T>().FindAsync([id], cancellationToken);
+
+    public Task<T> UpdateAsync(T entity, CancellationToken cancellationToken = default)
     {
-        T entity = await _session.GetAsync<T>(id);
-        return entity;
+        _context.Set<T>().Update(entity);
+        return Task.FromResult(entity);
     }
 
-    public async Task<T> AtualizarAsync(T entity, CancellationToken cancellationToken = default)
+    public async Task<PaginatedResult<T>> ListAsync(IQueryable<T> query, int page, int pageSize, string sortBy = "id", SortDirection sortDirection = SortDirection.Ascending)
     {
-        await _session.UpdateAsync(entity);
-        return entity;
+        return await ListAsync<T>(query, page, pageSize, sortBy, sortDirection);
     }
 
-    public async Task<PaginatedResult<T>> ListarAsync(IQueryable<T> query, int pagina, int quantidade, string cpOrd = "id", TipoOrdenacao tpOrd = TipoOrdenacao.Ascendente)
+    protected static async Task<PaginatedResult<TResult>> ListAsync<TResult>(IQueryable<TResult> query, int page, int pageSize, string sortBy = "id", SortDirection sortDirection = SortDirection.Ascending) where TResult : class
     {
-        return await ListarAsync<T>(query, pagina, quantidade, cpOrd, tpOrd);
-    }
-
-    protected static async Task<PaginatedResult<TResult>> ListarAsync<TResult>(IQueryable<TResult> query, int pagina, int quantidade, string cpOrd = "id", TipoOrdenacao tpOrd = TipoOrdenacao.Ascendente) where TResult : class
-    {
-        if (pagina < 1) pagina = 1;
-        if (quantidade < 1) quantidade = 10;
+        if (page < 1) page = 1;
+        if (pageSize < 1) pageSize = 10;
 
         int totalItems = await query.CountAsync();
 
-        query = AplicarOrdenacao(query, cpOrd, tpOrd);
+        query = ApplySorting(query, sortBy, sortDirection);
 
         IList<TResult> data = await query
-            .Skip((pagina - 1) * quantidade)
-            .Take(quantidade)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
 
-        return new PaginatedResult<TResult>(data, pagina, quantidade, totalItems);
+        return new PaginatedResult<TResult>(data, page, pageSize, totalItems);
     }
 
-    public async Task<T> InserirAsync(T entity, CancellationToken cancellationToken = default)
+    public async Task<T> InsertAsync(T entity, CancellationToken cancellationToken = default)
     {
-        await _session.SaveAsync(entity);
+        await _context.Set<T>().AddAsync(entity, cancellationToken);
         return entity;
     }
 
-    public async Task DeletarAsync(T tentity, CancellationToken cancellationToken = default)
+    public Task DeleteAsync(T entity, CancellationToken cancellationToken = default)
     {
-        await _session.DeleteAsync(tentity);
+        _context.Set<T>().Remove(entity);
+        return Task.CompletedTask;
     }
 
-    private static IQueryable<TResult> AplicarOrdenacao<TResult>(IQueryable<TResult> query, string cpOrd, TipoOrdenacao tpOrd)
+    private static IQueryable<TResult> ApplySorting<TResult>(IQueryable<TResult> query, string sortBy, SortDirection sortDirection)
     {
-        PropertyInfo? propriedade =
-            typeof(TResult).GetProperty(cpOrd, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance)
+        PropertyInfo? property =
+            typeof(TResult).GetProperty(sortBy, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance)
             ?? typeof(TResult).GetProperty("Id", BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
 
-        if (propriedade is null)
+        if (property is null)
             return query;
 
-        ParameterExpression parametro = Expression.Parameter(typeof(TResult), "x");
-        MemberExpression acesso = Expression.Property(parametro, propriedade);
-        LambdaExpression seletor = Expression.Lambda(acesso, parametro);
+        ParameterExpression parameter = Expression.Parameter(typeof(TResult), "x");
+        MemberExpression access = Expression.Property(parameter, property);
+        LambdaExpression selector = Expression.Lambda(access, parameter);
 
-        string metodo = tpOrd == TipoOrdenacao.Ascendente ? "OrderBy" : "OrderByDescending";
+        string method = sortDirection == SortDirection.Ascending ? "OrderBy" : "OrderByDescending";
 
-        MethodCallExpression chamada = Expression.Call(
+        MethodCallExpression call = Expression.Call(
             typeof(Queryable),
-            metodo,
-            new[] { typeof(TResult), propriedade.PropertyType },
+            method,
+            new[] { typeof(TResult), property.PropertyType },
             query.Expression,
-            Expression.Quote(seletor));
+            Expression.Quote(selector));
 
-        return query.Provider.CreateQuery<TResult>(chamada);
+        return query.Provider.CreateQuery<TResult>(call);
     }
 }

@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "Uby+gr5mDn4=",
+  "dgSpecHash": "E92LG4jjaek=",
   "success": true,
   "projectFilePath": "/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/Template.Core.Domain.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/home/felippestein/.nuget/packages/bcrypt.net-next/4.2.0/bcrypt.net-next.4.2.0.nupkg.sha512"
+  ],
   "logs": []
 }

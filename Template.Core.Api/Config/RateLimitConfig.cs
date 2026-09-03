@@ -5,13 +5,13 @@ using Microsoft.AspNetCore.RateLimiting;
 namespace Template.Core.Api.Config;
 
 /// <summary>
-/// Rate limiting global por IP (fixed window). Protege o portal público (endpoints
-/// anônimos) e todo o restante contra scraping/abuso. Valores em <c>RateLimit</c>.
-/// Fica no projeto da API por depender do framework ASP.NET Core (RateLimiting/HttpOverrides).
+/// Global per-IP rate limiting (fixed window). Protects the public portal (anonymous
+/// endpoints) and everything else against scraping/abuse. Values live under <c>RateLimit</c>.
+/// Lives in the API project because it depends on the ASP.NET Core framework (RateLimiting/HttpOverrides).
 /// </summary>
 public static class RateLimitConfig
 {
-    /// <summary>Nome da policy estrita para os endpoints de autenticação.</summary>
+    /// <summary>Name of the strict policy for the authentication endpoints.</summary>
     public const string AuthPolicyName = "auth";
 
     public static IServiceCollection AddCustomRateLimiter(this IServiceCollection services, IConfiguration configuration)
@@ -20,19 +20,19 @@ public static class RateLimitConfig
         int windowSeconds = configuration.GetValue("RateLimit:WindowSeconds", 60);
         int queueLimit = configuration.GetValue("RateLimit:QueueLimit", 0);
 
-        // Politica estrita para /api/Auth (login/refresh): reduz forca-bruta de credenciais.
+        // Strict policy for /api/Auth (login/refresh): reduces credential brute-forcing.
         int authPermitLimit = configuration.GetValue("RateLimit:Auth:PermitLimit", 10);
         int authWindowSeconds = configuration.GetValue("RateLimit:Auth:WindowSeconds", 60);
 
-        // O IP real do cliente (X-Forwarded-For) já é resolvido pelo UseForwardedHeaders
-        // configurado no Program.cs; aqui apenas particionamos por esse IP.
+        // The real client IP (X-Forwarded-For) is already resolved by UseForwardedHeaders
+        // configured in Program.cs; here we just partition by that IP.
         services.AddRateLimiter(options =>
         {
             options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
 
             options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
                 RateLimitPartition.GetFixedWindowLimiter(
-                    partitionKey: context.Connection.RemoteIpAddress?.ToString() ?? "desconhecido",
+                    partitionKey: context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
                     factory: _ => new FixedWindowRateLimiterOptions
                     {
                         PermitLimit = permitLimit,
@@ -41,11 +41,11 @@ public static class RateLimitConfig
                         AutoReplenishment = true,
                     }));
 
-            // Aplicada via [EnableRateLimiting("auth")]; soma-se ao GlobalLimiter (o request
-            // precisa passar nos dois), afunilando as tentativas de autenticacao por IP.
+            // Applied via [EnableRateLimiting("auth")]; stacks with the GlobalLimiter (the
+            // request must pass both), narrowing authentication attempts further by IP.
             options.AddPolicy(AuthPolicyName, context =>
                 RateLimitPartition.GetFixedWindowLimiter(
-                    partitionKey: context.Connection.RemoteIpAddress?.ToString() ?? "desconhecido",
+                    partitionKey: context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
                     factory: _ => new FixedWindowRateLimiterOptions
                     {
                         PermitLimit = authPermitLimit,
@@ -61,7 +61,7 @@ public static class RateLimitConfig
 
                 context.HttpContext.Response.ContentType = "application/problem+json";
                 await context.HttpContext.Response.WriteAsync(
-                    "{\"title\":\"Muitas requisicoes\",\"status\":429,\"detail\":\"Limite de requisicoes excedido. Tente novamente em instantes.\"}",
+                    "{\"title\":\"Too many requests\",\"status\":429,\"detail\":\"Request limit exceeded. Please try again shortly.\"}",
                     cancellationToken);
             };
         });

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,24 +9,24 @@ namespace Template.Core.IoC.Scalar.Config;
 
 public static class ScalarConfig
 {
-    // Obs.: AddOpenApi() NAO fica aqui de proposito. Ele precisa ser chamado no
-    // projeto da API (Program.cs) para o source generator de comentarios XML
-    // conseguir interceptar a chamada e injetar summary/description no documento.
+    // Note: AddOpenApi() is intentionally NOT here. It needs to be called in the
+    // API project (Program.cs) so the XML-comments source generator can intercept
+    // the call and inject summary/description into the document.
     public static WebApplication UseApiDocumentation(this WebApplication app, IConfiguration configuration)
     {
         var scalarConfig = configuration.GetSection("Scalar");
         var title = scalarConfig["Title"] ?? "Template - API";
 
-        // AllowAnonymous explicito: o FallbackPolicy (RequireAuthenticatedUser) do JwtConfig vale
-        // para todo endpoint sem metadata de autorizacao, e os do OpenAPI/Scalar nao tem nenhuma.
-        // Sem isto a doc responde 401. So existe em Development (ver Program.cs).
+        // Explicit AllowAnonymous: the FallbackPolicy (RequireAuthenticatedUser) from JwtConfig
+        // applies to every endpoint without authorization metadata, and the OpenAPI/Scalar ones
+        // have none. Without this the docs would respond 401. Only exists in Development (see Program.cs).
         app.MapOpenApi().AllowAnonymous();
         app.MapScalarApiReference(options =>
         {
             options.WithTitle(title);
 
-            // Bearer como esquema padrão: o campo de token já aparece pronto na request e
-            // o Scalar persiste/anexa o Authorization automaticamente nas chamadas protegidas.
+            // Bearer as the default scheme: the token field is already ready in the request and
+            // Scalar persists/attaches the Authorization header automatically on protected calls.
             options.AddPreferredSecuritySchemes("Bearer");
 
             var servers = scalarConfig.GetSection("Servers").Get<ServerConfig[]>();

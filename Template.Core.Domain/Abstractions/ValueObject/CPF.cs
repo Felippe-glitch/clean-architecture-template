@@ -1,75 +1,76 @@
 using System.Text.RegularExpressions;
-using Template.Core.Domain.Abstractions.Exceptions;
+using Template.Core.CrossCutting.Exceptions;
 
 namespace Template.Core.Domain.Abstractions.ValueObject;
 
+/// <summary>CPF: the Brazilian individual taxpayer registry number.</summary>
 public record CPF
 {
-    public string Formatado {get; init;}
-    public string SomenteNumeros {get; init;}
+    public string Formatted {get; init;}
+    public string DigitsOnly {get; init;}
 
-    public CPF(string _cpf)
+    public CPF(string value)
     {
-        if (string.IsNullOrWhiteSpace(_cpf))
+        if (string.IsNullOrWhiteSpace(value))
         {
-            throw new ArgumentException("CPF não pode estar vazio");
+            throw new ArgumentException("CPF cannot be empty");
         }
 
-        string padraoValidacao = @"^\d{3}[-.]?\d{3}[-.]?\d{3}[-.]?\d{2}$";
+        string validationPattern = @"^\d{3}[-.]?\d{3}[-.]?\d{3}[-.]?\d{2}$";
 
-        if (!Regex.IsMatch(_cpf, padraoValidacao))
+        if (!Regex.IsMatch(value, validationPattern))
         {
-            throw new RegraDeNegocioVioladaException("CPF não tem onze digitos");
-        }       
-
-        string numerosExtraidos = Regex.Replace(_cpf, @"\D", "");
-
-        if (!Validar(numerosExtraidos))
-        {
-            throw new RegraDeNegocioVioladaException("O CPF informado é matematicamente inválido (inventado).");
+            throw new BusinessRuleException("CPF does not have eleven digits");
         }
 
-        // 3. Se passou pela validação, preenche as propriedades do Record
-        SomenteNumeros = numerosExtraidos;
-        Formatado = Regex.Replace(SomenteNumeros, @"(\d{3})(\d{3})(\d{3})(\d{2})", "$1.$2.$3-$4");
+        string extractedDigits = Regex.Replace(value, @"\D", "");
+
+        if (!IsValid(extractedDigits))
+        {
+            throw new BusinessRuleException("The provided CPF is mathematically invalid (made up).");
+        }
+
+        // 3. Once validation passes, populate the record's properties
+        DigitsOnly = extractedDigits;
+        Formatted = Regex.Replace(DigitsOnly, @"(\d{3})(\d{3})(\d{3})(\d{2})", "$1.$2.$3-$4");
     }
 
-    private bool Validar(string cpf)
+    private bool IsValid(string cpf)
     {
         if (cpf.All(c => c == cpf[0]))
             return false;
 
-        int[] pesosPrimeiroDigito = [10, 9, 8, 7, 6, 5, 4, 3, 2];
-        int soma = 0;
+        int[] firstDigitWeights = [10, 9, 8, 7, 6, 5, 4, 3, 2];
+        int sum = 0;
 
         for (int i = 0; i < 9; i++)
         {
-            // Convertemos o caractere char numérico para int de forma eficiente
-            int digito = cpf[i] - '0'; 
-            soma += digito * pesosPrimeiroDigito[i];
+            // Convert the numeric char to int efficiently
+            int digit = cpf[i] - '0';
+            sum += digit * firstDigitWeights[i];
         }
 
-        int resto = soma % 11;
-        int primeiroDigitoVerificador = resto < 2 ? 0 : 11 - resto;
+        int remainder = sum % 11;
+        int firstCheckDigit = remainder < 2 ? 0 : 11 - remainder;
 
-        // Se o primeiro dígito calculado não bater com o 10º dígito do CPF digitado, é inválido
-        if (primeiroDigitoVerificador != (cpf[9] - '0'))
+        // If the computed first digit doesn't match the CPF's 10th digit, it's invalid
+        if (firstCheckDigit != (cpf[9] - '0'))
             return false;
 
-        // --- CÁLCULO DO 2º DÍGITO VERIFICADOR ---
-        int[] pesosSegundoDigito = [11, 10, 9, 8, 7, 6, 5, 4, 3, 2];
-        soma = 0;
+        // --- SECOND CHECK DIGIT CALCULATION ---
+        int[] secondDigitWeights = [11, 10, 9, 8, 7, 6, 5, 4, 3, 2];
+        sum = 0;
 
         for (int i = 0; i < 10; i++)
         {
-            int digito = cpf[i] - '0';
-            soma += digito * pesosSegundoDigito[i];
+            int digit = cpf[i] - '0';
+            sum += digit * secondDigitWeights[i];
         }
 
-        resto = soma % 11;
-        int segundoDigitoVerificador = resto < 2 ? 0 : 11 - resto;
+        remainder = sum % 11;
+        int secondCheckDigit = remainder < 2 ? 0 : 11 - remainder;
 
-        // Se o segundo dígito calculado bater com o 11º dígito do CPF, ele é legítimo!
-        return segundoDigitoVerificador == (cpf[10] - '0');
+        // If the computed second digit matches the CPF's 11th digit, it's legitimate!
+        return secondCheckDigit == (cpf[10] - '0');
     }
 }

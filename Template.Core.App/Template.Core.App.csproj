@@ -2,8 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Template.Core.Domain\Template.Core.Domain.csproj" />
-    <ProjectReference Include="..\Template.Core.Domain\Template.Core.Domain.csproj" />
-    <ProjectReference Include="..\Template.Core.Infra\Template.Core.Infra.csproj" />
+    <ProjectReference Include="..\Template.Core.CrossCutting\Template.CrossCutting.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -11,8 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="BCrypt.Net-Next" Version="4.2.0" />
-    <PackageReference Include="CloudinaryDotNet" Version="1.29.2" />
     <PackageReference Include="Mapster" Version="10.0.8" />
     <PackageReference Include="Mapster.DependencyInjection" Version="10.0.8" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.19.1" />

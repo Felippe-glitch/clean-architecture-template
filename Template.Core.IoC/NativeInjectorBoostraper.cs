@@ -4,18 +4,22 @@ using Microsoft.Extensions.Hosting;
 using Template.Core.App.Auth;
 using Template.Core.App.Auth.Service;
 using Template.Core.App.Common;
-using Template.Core.App.Usuarios.Service;
-using Template.Core.Domain.Usuarios.Repository;
-using Template.Core.Domain.Usuarios.Service;
-using Template.Core.Infra.Usuarios.Repository;
+using Template.Core.App.Users.Interfaces.Service;
+using Template.Core.App.Users.Service;
+using Template.Core.CrossCutting.Security;
+using Template.Core.Domain.Users.Interfaces.Service;
+using Template.Core.Domain.Users.Repository;
+using Template.Core.Domain.Users.Service;
+using Template.Core.Infra.Common;
+using Template.Core.Infra.Users.Repository;
 using Template.Core.IoC.Config;
 using Template.Core.IoC.Config.Auth;
-using Template.Core.IoC.Config.Config;
+using Template.Core.IoC.Config.Database;
 
 namespace Template.Core.IoC;
 
  /// <summary>
- /// Classe responsavel por injetar os serviços por contexto na api
+ /// Composition root responsible for registering the application's services, per context, into the API.
  /// </summary>
 public static class NativeInjectorBoostraper
 {
@@ -32,7 +36,7 @@ public static class NativeInjectorBoostraper
 
     public static IServiceCollection AddDomain(this IServiceCollection services)
     {
-        services.AddScoped<IUsuarioService, UsuarioService>();
+        services.AddScoped<IUserService, UserService>();
 
         return services;
     }
@@ -45,10 +49,9 @@ public static class NativeInjectorBoostraper
 
         services.AddMemoryCache();
 
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
         services.AddScoped<IAuthAppService, AuthAppService>();
-        services.AddScoped<IUsuarioAppService, UsuarioAppService>();
+        services.AddScoped<IUserAppService, UserAppService>();
 
         return services;
     }
@@ -56,7 +59,8 @@ public static class NativeInjectorBoostraper
     public static IServiceCollection AddInfra(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
     {
         services.AddPostgreSqlContext(configuration, environment);
-        services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;
     }

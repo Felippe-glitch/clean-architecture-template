@@ -5,9 +5,9 @@ using Microsoft.OpenApi;
 namespace Template.Core.IoC.Scalar.Config;
 
 /// <summary>
-/// Declara o esquema de seguranca Bearer (JWT) no documento OpenAPI para o Scalar
-/// exibir o campo de autenticacao, aplicando o requisito apenas nas operacoes
-/// protegidas (com <c>[Authorize]</c> e sem <c>[AllowAnonymous]</c>).
+/// Declares the Bearer (JWT) security scheme in the OpenAPI document so Scalar shows the
+/// authentication field, applying the requirement only to protected operations (those with
+/// <c>[Authorize]</c> and without <c>[AllowAnonymous]</c>).
 /// </summary>
 public static class OpenApiSecurityConfig
 {
@@ -25,7 +25,7 @@ public static class OpenApiSecurityConfig
                 Scheme = "bearer",
                 BearerFormat = "JWT",
                 In = ParameterLocation.Header,
-                Description = "Informe o token JWT emitido em /api/Auth/login."
+                Description = "Enter the JWT token issued by /api/Auth/login."
             };
             return Task.CompletedTask;
         });
@@ -33,10 +33,10 @@ public static class OpenApiSecurityConfig
         options.AddOperationTransformer((operation, context, cancellationToken) =>
         {
             IList<object> metadata = context.Description.ActionDescriptor.EndpointMetadata;
-            bool permiteAnonimo = metadata.OfType<IAllowAnonymous>().Any();
-            bool exigeAutorizacao = metadata.OfType<IAuthorizeData>().Any();
+            bool allowsAnonymous = metadata.OfType<IAllowAnonymous>().Any();
+            bool requiresAuthorization = metadata.OfType<IAuthorizeData>().Any();
 
-            if (exigeAutorizacao && !permiteAnonimo)
+            if (requiresAuthorization && !allowsAnonymous)
             {
                 OpenApiSecuritySchemeReference reference = new(SchemeId, context.Document);
                 operation.Security ??= [];

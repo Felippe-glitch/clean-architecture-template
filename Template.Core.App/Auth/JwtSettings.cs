@@ -2,35 +2,35 @@ using System.Text;
 
 namespace Template.Core.App.Auth;
 
-/// <summary>Parâmetros de assinatura/validação do JWT (seção <c>Jwt</c> da configuração).</summary>
+/// <summary>JWT signing/validation parameters (the <c>Jwt</c> configuration section).</summary>
 public class JwtSettings
 {
     public string Key { get; set; } = string.Empty;
     public string Issuer { get; set; } = "Template";
     public string Audience { get; set; } = "Template";
-    /// <summary>Tempo de vida do access token, em minutos (curto; padrão: 15).</summary>
-    public int ExpiraMinutos { get; set; } = 15;
-    /// <summary>Tempo de vida do refresh token, em dias (padrão: 7).</summary>
-    public int RefreshExpiraDias { get; set; } = 7;
+    /// <summary>Access token lifetime, in minutes (short-lived; default: 15).</summary>
+    public int ExpirationMinutes { get; set; } = 15;
+    /// <summary>Refresh token lifetime, in days (default: 7).</summary>
+    public int RefreshExpirationDays { get; set; } = 7;
 
     /// <summary>
-    /// Audience do refresh token — distinta do access de propósito. O middleware JwtBearer
-    /// valida <see cref="Audience"/>, então um refresh (com esta audience) é rejeitado nas
-    /// rotas protegidas, impedindo usar o token longo como bearer.
+    /// Audience of the refresh token — intentionally distinct from the access token's. The
+    /// JwtBearer middleware validates <see cref="Audience"/>, so a refresh token (with this
+    /// audience) is rejected on protected routes, preventing the long-lived token from being
+    /// used as a bearer token.
     /// </summary>
     public string RefreshAudience => $"{Audience}:refresh";
 
     /// <summary>
-    /// Mínimo de bytes da chave de assinatura. É o tamanho do bloco do HMAC-SHA256: uma
-    /// chave menor não acrescenta entropia além do próprio comprimento e enfraquece a
-    /// assinatura.
+    /// Minimum size of the signing key, in bytes. This is the HMAC-SHA256 block size: a
+    /// smaller key adds no entropy beyond its own length and weakens the signature.
     /// </summary>
-    public const int TamanhoMinimoChaveBytes = 32;
+    public const int MinimumSigningKeyBytes = 32;
 
-    public bool EstaConfigurado => !string.IsNullOrWhiteSpace(Key);
+    public bool IsConfigured => !string.IsNullOrWhiteSpace(Key);
 
-    /// <summary>Tamanho da chave em bytes UTF-8 — a mesma codificação usada para assinar.</summary>
-    public int TamanhoChaveBytes => Encoding.UTF8.GetByteCount(Key ?? string.Empty);
+    /// <summary>Size of the key in UTF-8 bytes — the same encoding used to sign.</summary>
+    public int SigningKeyBytes => Encoding.UTF8.GetByteCount(Key ?? string.Empty);
 
-    public bool ChaveTemForcaSuficiente => TamanhoChaveBytes >= TamanhoMinimoChaveBytes;
+    public bool HasSufficientKeyStrength => SigningKeyBytes >= MinimumSigningKeyBytes;
 }

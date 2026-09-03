@@ -28,11 +28,11 @@
             "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {
+              "/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.CrossCutting/Template.CrossCutting.csproj": {
+                "projectPath": "/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.CrossCutting/Template.CrossCutting.csproj"
+              },
               "/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/Template.Core.Domain.csproj": {
                 "projectPath": "/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/Template.Core.Domain.csproj"
-              },
-              "/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Infra/Template.Core.Infra.csproj": {
-                "projectPath": "/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Infra/Template.Core.Infra.csproj"
               }
             }
           }
@@ -54,14 +54,6 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "dependencies": {
-            "BCrypt.Net-Next": {
-              "target": "Package",
-              "version": "[4.2.0, )"
-            },
-            "CloudinaryDotNet": {
-              "target": "Package",
-              "version": "[1.29.2, )"
-            },
             "Mapster": {
               "target": "Package",
               "version": "[10.0.8, )"
@@ -512,14 +504,14 @@
         }
       }
     },
-    "/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/Template.Core.Domain.csproj": {
+    "/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.CrossCutting/Template.CrossCutting.csproj": {
       "version": "0.0.2",
       "restore": {
-        "projectUniqueName": "/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/Template.Core.Domain.csproj",
-        "projectName": "Template.Core.Domain",
-        "projectPath": "/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/Template.Core.Domain.csproj",
+        "projectUniqueName": "/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.CrossCutting/Template.CrossCutting.csproj",
+        "projectName": "Template.CrossCutting",
+        "projectPath": "/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.CrossCutting/Template.CrossCutting.csproj",
         "packagesPath": "/home/felippestein/.nuget/packages/",
-        "outputPath": "/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/obj/",
+        "outputPath": "/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.CrossCutting/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/felippestein/.nuget/NuGet/NuGet.Config"
@@ -554,6 +546,12 @@
         "net10.0": {
           "framework": "net10.0",
           "targetAlias": "net10.0",
+          "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.2.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -848,14 +846,14 @@
         }
       }
     },
-    "/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Infra/Template.Core.Infra.csproj": {
+    "/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/Template.Core.Domain.csproj": {
       "version": "0.0.2",
       "restore": {
-        "projectUniqueName": "/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Infra/Template.Core.Infra.csproj",
-        "projectName": "Template.Core.Infra",
-        "projectPath": "/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Infra/Template.Core.Infra.csproj",
+        "projectUniqueName": "/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/Template.Core.Domain.csproj",
+        "projectName": "Template.Core.Domain",
+        "projectPath": "/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/Template.Core.Domain.csproj",
         "packagesPath": "/home/felippestein/.nuget/packages/",
-        "outputPath": "/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Infra/obj/",
+        "outputPath": "/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/felippestein/.nuget/NuGet/NuGet.Config"
@@ -872,8 +870,8 @@
             "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {
-              "/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/Template.Core.Domain.csproj": {
-                "projectPath": "/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/Template.Core.Domain.csproj"
+              "/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.CrossCutting/Template.CrossCutting.csproj": {
+                "projectPath": "/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.CrossCutting/Template.CrossCutting.csproj"
               }
             }
           }
@@ -894,20 +892,6 @@
         "net10.0": {
           "framework": "net10.0",
           "targetAlias": "net10.0",
-          "dependencies": {
-            "FluentNHibernate": {
-              "target": "Package",
-              "version": "[3.4.1, )"
-            },
-            "NHibernate": {
-              "target": "Package",
-              "version": "[5.4.9, )"
-            },
-            "Npgsql": {
-              "target": "Package",
-              "version": "[10.0.3, )"
-            }
-          },
           "imports": [
             "net461",
             "net462",

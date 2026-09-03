@@ -12,3 +12,7 @@
 /home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/obj/Debug/net10.0/Template.Core.Domain.xml
 /home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/obj/Debug/net10.0/Template.Core.Domain.pdb
 /home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/obj/Debug/net10.0/ref/Template.Core.Domain.dll
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/bin/Debug/net10.0/Template.CrossCutting.dll
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/bin/Debug/net10.0/Template.CrossCutting.pdb
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/obj/Debug/net10.0/Template.Core.Domain.csproj.AssemblyReference.cache
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.Domain/obj/Debug/net10.0/Template.C8BF16BB.Up2Date

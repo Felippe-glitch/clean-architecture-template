@@ -1,15 +1,15 @@
 namespace Template.Core.App.Auth;
 
 /// <summary>
-/// Lockout de login por conta (seção <c>RateLimit:Auth</c> da configuração). Defesa em
-/// profundidade sobre o rate limit por IP: aquele depende da topologia do proxy, que pode
-/// mudar sem aviso; este não depende de IP nenhum.
+/// Per-account login lockout (the <c>RateLimit:Auth</c> configuration section). Defense in
+/// depth on top of the per-IP rate limit: the latter depends on the proxy topology, which
+/// can change without notice; this one doesn't depend on any IP.
 /// </summary>
 public class LoginLockoutSettings
 {
-    /// <summary>Falhas consecutivas na mesma conta antes de bloquear (padrão: 5).</summary>
-    public int LockoutFalhas { get; set; } = 5;
+    /// <summary>Consecutive failures on the same account before locking it out (default: 5).</summary>
+    public int LockoutAttempts { get; set; } = 5;
 
-    /// <summary>Duração do bloqueio, contada a partir da última falha (padrão: 15 min).</summary>
-    public int LockoutMinutos { get; set; } = 15;
+    /// <summary>Lockout duration, counted from the last failure (default: 15 min).</summary>
+    public int LockoutMinutes { get; set; } = 15;
 }

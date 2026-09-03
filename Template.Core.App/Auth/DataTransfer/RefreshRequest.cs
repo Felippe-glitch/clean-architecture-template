@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Template.Core.App.Auth.DataTransfer;
 
-/// <summary>Corpo para renovar (refresh) a sessão. Não existe logout — ver ADR 08 e o achado F4.</summary>
+/// <summary>Body used to renew (refresh) the session. There is no logout — see ADR 08 and finding F4.</summary>
 public record RefreshRequest
 {
     [Required]

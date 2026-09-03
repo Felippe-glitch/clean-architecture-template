@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Title>Template.Api</Title>
-    <!-- <Version> vem de backend/Directory.Build.props — não declarar aqui. -->
+    <!-- <Version> comes from backend/Directory.Build.props — do not declare it here. -->
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -13,10 +13,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Referenciado diretamente na API para que o source generator de comentarios
-         XML do OpenAPI rode nesta compilacao (assets de analyzer nao fluem por ProjectReference). -->
+    <!-- Referenced directly in the API so the OpenAPI XML-comments source generator
+         runs on this compilation (analyzer assets don't flow through ProjectReference). -->
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.10" />
-    <!-- Sobrepoe o transitivo 2.0.0 (CVE-2026-49451 / GHSA-v5pm-xwqc-g5wc). Corrigido em 2.7.5+. -->
+    <!-- Overrides the transitive 2.0.0 (CVE-2026-49451 / GHSA-v5pm-xwqc-g5wc). Fixed in 2.7.5+. -->
     <PackageReference Include="Microsoft.OpenApi" Version="2.7.5" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.3" />
   </ItemGroup>

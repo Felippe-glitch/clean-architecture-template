@@ -1,13 +1,13 @@
 <Project>
 
   <!--
-    Fonte única da versão do produto (backend e frontend).
+    Single source of truth for the product version (backend and frontend).
 
-    Todos os projetos sob backend/ herdam <Version> daqui — nenhum .csproj deve
-    declarar a sua própria. O frontend/package.json espelha este valor, e
-    scripts/check-version.mjs falha o CI se os dois divergirem.
+    Every project under backend/ inherits <Version> from here — no .csproj should
+    declare its own. frontend/package.json mirrors this value, and
+    scripts/check-version.mjs fails CI if the two diverge.
 
-    No PR de release, o bump acontece aqui e no package.json — em mais lugar nenhum.
+    On a release PR, the bump happens here and in package.json — nowhere else.
   -->
   <PropertyGroup>
     <Version>0.0.2</Version>

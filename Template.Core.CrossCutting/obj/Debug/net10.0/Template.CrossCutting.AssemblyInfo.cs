@@ -10,11 +10,10 @@
 using System;
 using System.Reflection;
 
-[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("c8e6ad40-33cc-484f-b108-9bf8de9b5c6e")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("Template.CrossCutting")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("0.0.2.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("0.0.2+035898078bf2ebb3335f2babeed6dbba67a9d961")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("0.0.2+d0d8be22141ab0bfcd1612b49717eef95e9fa740")]
 [assembly: System.Reflection.AssemblyProductAttribute("Template.CrossCutting")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Template.CrossCutting")]
 [assembly: System.Reflection.AssemblyVersionAttribute("0.0.2.0")]

@@ -8,8 +8,6 @@
     ".NETCoreApp,Version=v10.0": {
       "Template.Core.IoC/0.0.2": {
         "dependencies": {
-          "CloudinaryDotNet": "1.29.2",
-          "FluentNHibernate": "3.4.1",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "10.0.9",
           "Microsoft.AspNetCore.OpenApi": "10.0.10",
           "Microsoft.OpenApi": "2.7.5",
@@ -28,41 +26,11 @@
           "Template.Core.IoC.dll": {}
         }
       },
-      "Antlr3.Runtime/3.5.1": {
-        "runtime": {
-          "lib/netstandard1.1/Antlr3.Runtime.dll": {
-            "assemblyVersion": "3.5.0.2",
-            "fileVersion": "3.5.1.0"
-          }
-        }
-      },
       "BCrypt.Net-Next/4.2.0": {
         "runtime": {
           "lib/net10.0/BCrypt-Net-Next.dll": {
             "assemblyVersion": "4.2.0.0",
             "fileVersion": "4.2.0.0"
-          }
-        }
-      },
-      "CloudinaryDotNet/1.29.2": {
-        "dependencies": {
-          "Newtonsoft.Json": "13.0.3"
-        },
-        "runtime": {
-          "lib/netstandard2.0/CloudinaryDotNet.dll": {
-            "assemblyVersion": "1.29.2.0",
-            "fileVersion": "1.29.2.0"
-          }
-        }
-      },
-      "FluentNHibernate/3.4.1": {
-        "dependencies": {
-          "NHibernate": "5.4.9"
-        },
-        "runtime": {
-          "lib/netcoreapp2.0/FluentNHibernate.dll": {
-            "assemblyVersion": "3.4.0.0",
-            "fileVersion": "3.4.1.0"
           }
         }
       },
@@ -153,14 +121,6 @@
           }
         }
       },
-      "Iesi.Collections/4.0.4": {
-        "runtime": {
-          "lib/netstandard1.3/Iesi.Collections.dll": {
-            "assemblyVersion": "4.0.0.4000",
-            "fileVersion": "4.0.4.0"
-          }
-        }
-      },
       "Mapster/10.0.8": {
         "dependencies": {
           "Mapster.Core": "10.0.8"
@@ -218,6 +178,36 @@
           "lib/net10.0/Microsoft.Bcl.Cryptography.dll": {
             "assemblyVersion": "10.0.0.2",
             "fileVersion": "10.0.225.61305"
+          }
+        }
+      },
+      "Microsoft.EntityFrameworkCore/10.0.11": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.Abstractions": "10.0.11"
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.EntityFrameworkCore.dll": {
+            "assemblyVersion": "10.0.11.0",
+            "fileVersion": "10.0.1126.37416"
+          }
+        }
+      },
+      "Microsoft.EntityFrameworkCore.Abstractions/10.0.11": {
+        "runtime": {
+          "lib/net10.0/Microsoft.EntityFrameworkCore.Abstractions.dll": {
+            "assemblyVersion": "10.0.11.0",
+            "fileVersion": "10.0.1126.37416"
+          }
+        }
+      },
+      "Microsoft.EntityFrameworkCore.Relational/10.0.4": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "10.0.11"
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.EntityFrameworkCore.Relational.dll": {
+            "assemblyVersion": "10.0.4.0",
+            "fileVersion": "10.0.426.12010"
           }
         }
       },
@@ -302,45 +292,6 @@
           }
         }
       },
-      "Microsoft.Win32.SystemEvents/6.0.0": {
-        "runtime": {
-          "lib/net6.0/Microsoft.Win32.SystemEvents.dll": {
-            "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.21.52210"
-          }
-        },
-        "runtimeTargets": {
-          "runtimes/win/lib/net6.0/Microsoft.Win32.SystemEvents.dll": {
-            "rid": "win",
-            "assetType": "runtime",
-            "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.21.52210"
-          }
-        }
-      },
-      "Newtonsoft.Json/13.0.3": {
-        "runtime": {
-          "lib/net6.0/Newtonsoft.Json.dll": {
-            "assemblyVersion": "13.0.0.0",
-            "fileVersion": "13.0.3.27908"
-          }
-        }
-      },
-      "NHibernate/5.4.9": {
-        "dependencies": {
-          "Antlr3.Runtime": "3.5.1",
-          "Iesi.Collections": "4.0.4",
-          "Remotion.Linq": "2.2.0",
-          "Remotion.Linq.EagerFetching": "2.2.0",
-          "System.Configuration.ConfigurationManager": "6.0.0"
-        },
-        "runtime": {
-          "lib/net6.0/NHibernate.dll": {
-            "assemblyVersion": "5.4.0.0",
-            "fileVersion": "5.4.9.0"
-          }
-        }
-      },
       "Npgsql/10.0.3": {
         "runtime": {
           "lib/net10.0/Npgsql.dll": {
@@ -349,22 +300,16 @@
           }
         }
       },
-      "Remotion.Linq/2.2.0": {
-        "runtime": {
-          "lib/netstandard1.0/Remotion.Linq.dll": {
-            "assemblyVersion": "2.2.0.0",
-            "fileVersion": "2.2.0.30000"
-          }
-        }
-      },
-      "Remotion.Linq.EagerFetching/2.2.0": {
+      "Npgsql.EntityFrameworkCore.PostgreSQL/10.0.3": {
         "dependencies": {
-          "Remotion.Linq": "2.2.0"
+          "Microsoft.EntityFrameworkCore": "10.0.11",
+          "Microsoft.EntityFrameworkCore.Relational": "10.0.4",
+          "Npgsql": "10.0.3"
         },
         "runtime": {
-          "lib/netstandard1.0/Remotion.Linq.EagerFetching.dll": {
-            "assemblyVersion": "2.2.0.0",
-            "fileVersion": "2.2.0.30000"
+          "lib/net10.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll": {
+            "assemblyVersion": "10.0.3.0",
+            "fileVersion": "10.0.3.0"
           }
         }
       },
@@ -527,43 +472,6 @@
           }
         }
       },
-      "System.Configuration.ConfigurationManager/6.0.0": {
-        "dependencies": {
-          "System.Security.Cryptography.ProtectedData": "6.0.0",
-          "System.Security.Permissions": "6.0.0"
-        },
-        "runtime": {
-          "lib/net6.0/System.Configuration.ConfigurationManager.dll": {
-            "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.21.52210"
-          }
-        }
-      },
-      "System.Drawing.Common/6.0.0": {
-        "dependencies": {
-          "Microsoft.Win32.SystemEvents": "6.0.0"
-        },
-        "runtime": {
-          "lib/net6.0/System.Drawing.Common.dll": {
-            "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.21.52210"
-          }
-        },
-        "runtimeTargets": {
-          "runtimes/unix/lib/net6.0/System.Drawing.Common.dll": {
-            "rid": "unix",
-            "assetType": "runtime",
-            "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.21.52210"
-          },
-          "runtimes/win/lib/net6.0/System.Drawing.Common.dll": {
-            "rid": "win",
-            "assetType": "runtime",
-            "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.21.52210"
-          }
-        }
-      },
       "System.IdentityModel.Tokens.Jwt/8.19.1": {
         "dependencies": {
           "Microsoft.IdentityModel.JsonWebTokens": "8.19.1",
@@ -576,61 +484,13 @@
           }
         }
       },
-      "System.Security.Cryptography.ProtectedData/6.0.0": {
-        "runtime": {
-          "lib/net6.0/System.Security.Cryptography.ProtectedData.dll": {
-            "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.21.52210"
-          }
-        },
-        "runtimeTargets": {
-          "runtimes/win/lib/net6.0/System.Security.Cryptography.ProtectedData.dll": {
-            "rid": "win",
-            "assetType": "runtime",
-            "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.21.52210"
-          }
-        }
-      },
-      "System.Security.Permissions/6.0.0": {
-        "dependencies": {
-          "System.Windows.Extensions": "6.0.0"
-        },
-        "runtime": {
-          "lib/net6.0/System.Security.Permissions.dll": {
-            "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.21.52210"
-          }
-        }
-      },
-      "System.Windows.Extensions/6.0.0": {
-        "dependencies": {
-          "System.Drawing.Common": "6.0.0"
-        },
-        "runtime": {
-          "lib/net6.0/System.Windows.Extensions.dll": {
-            "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.21.52210"
-          }
-        },
-        "runtimeTargets": {
-          "runtimes/win/lib/net6.0/System.Windows.Extensions.dll": {
-            "rid": "win",
-            "assetType": "runtime",
-            "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.21.52210"
-          }
-        }
-      },
       "Template.Core.App/0.0.2": {
         "dependencies": {
-          "BCrypt.Net-Next": "4.2.0",
-          "CloudinaryDotNet": "1.29.2",
           "Mapster": "10.0.8",
           "Mapster.DependencyInjection": "10.0.8",
           "System.IdentityModel.Tokens.Jwt": "8.19.1",
           "Template.Core.Domain": "0.0.2",
-          "Template.Core.Infra": "0.0.2"
+          "Template.CrossCutting": "0.0.2"
         },
         "runtime": {
           "Template.Core.App.dll": {
@@ -640,6 +500,9 @@
         }
       },
       "Template.Core.Domain/0.0.2": {
+        "dependencies": {
+          "Template.CrossCutting": "0.0.2"
+        },
         "runtime": {
           "Template.Core.Domain.dll": {
             "assemblyVersion": "0.0.2.0",
@@ -649,13 +512,25 @@
       },
       "Template.Core.Infra/0.0.2": {
         "dependencies": {
-          "FluentNHibernate": "3.4.1",
-          "NHibernate": "5.4.9",
-          "Npgsql": "10.0.3",
-          "Template.Core.Domain": "0.0.2"
+          "Microsoft.EntityFrameworkCore": "10.0.11",
+          "Npgsql.EntityFrameworkCore.PostgreSQL": "10.0.3",
+          "Template.Core.App": "0.0.2",
+          "Template.Core.Domain": "0.0.2",
+          "Template.CrossCutting": "0.0.2"
         },
         "runtime": {
           "Template.Core.Infra.dll": {
+            "assemblyVersion": "0.0.2.0",
+            "fileVersion": "0.0.2.0"
+          }
+        }
+      },
+      "Template.CrossCutting/0.0.2": {
+        "dependencies": {
+          "BCrypt.Net-Next": "4.2.0"
+        },
+        "runtime": {
+          "Template.CrossCutting.dll": {
             "assemblyVersion": "0.0.2.0",
             "fileVersion": "0.0.2.0"
           }
@@ -669,33 +544,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Antlr3.Runtime/3.5.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-ZwCEpLCLZXkjzf1lYEixp9hgVlYYk33ACHn6xjFyVhGRi2BpoYQez0qtatbetdylASWYTG+cGz0CGR4z66JM4w==",
-      "path": "antlr3.runtime/3.5.1",
-      "hashPath": "antlr3.runtime.3.5.1.nupkg.sha512"
-    },
     "BCrypt.Net-Next/4.2.0": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-gwLD2KfCuwQesP17aVh4h6lpiMPEVt5Lbpndo0ej903hNUUTtyxt3ARdDjmuydBRTAUICc7OVKVbaOvc6SQYXA==",
       "path": "bcrypt.net-next/4.2.0",
       "hashPath": "bcrypt.net-next.4.2.0.nupkg.sha512"
-    },
-    "CloudinaryDotNet/1.29.2": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-4vrrx4N960MShjpKlsiRdl8eIHeT2UBn2X69d7b7C34M84lyoZT/ig4CkVCCb8fx5X95oaLE3wNv4tGJHHGnSA==",
-      "path": "cloudinarydotnet/1.29.2",
-      "hashPath": "cloudinarydotnet.1.29.2.nupkg.sha512"
-    },
-    "FluentNHibernate/3.4.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-uPjamAeZEpgD9ITPa40qNIA9GQbdEqCq9OwpNcHAUSSDu6TULDIKYK9BylBgr47mQsR/bInCsMOwbNWn5XKpWA==",
-      "path": "fluentnhibernate/3.4.1",
-      "hashPath": "fluentnhibernate.3.4.1.nupkg.sha512"
     },
     "FSharp.Core/10.1.301": {
       "type": "package",
@@ -731,13 +585,6 @@
       "sha512": "sha512-rBdEUMyCwa+iB8mqC6JKyPbj3SBHHkReJj/yy/XKJI63GcG6w9DJMMGTVcYHqq4Ci2W4m0HT4jt2pFfFscar8g==",
       "path": "grpc.net.common/2.70.0",
       "hashPath": "grpc.net.common.2.70.0.nupkg.sha512"
-    },
-    "Iesi.Collections/4.0.4": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-jlebSjv2a7amYfKXEUsPDSf2Yi9r0/FkvvT6Dy7ehl7z8du+dTGqKDu+fYbnE+WuIz/v3prYm1jpBljMrY1p+Q==",
-      "path": "iesi.collections/4.0.4",
-      "hashPath": "iesi.collections.4.0.4.nupkg.sha512"
     },
     "Mapster/10.0.8": {
       "type": "package",
@@ -780,6 +627,27 @@
       "sha512": "sha512-LG9Yll3B5aNpxv0+D47g6LiOiKBIlodhcHdQwcYzo8VeexFLGqx5ymetmA2aBRyo9cCcWsQWrFsdbsr8LvmWDw==",
       "path": "microsoft.bcl.cryptography/10.0.2",
       "hashPath": "microsoft.bcl.cryptography.10.0.2.nupkg.sha512"
+    },
+    "Microsoft.EntityFrameworkCore/10.0.11": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-VOSGU8en6HZJs8t7UMFN+9vGcRgVOOn6fA44Ngcg2NyvJ3P1KE94iAb0XzaVaGhXGtt+qaM/VtEn0/hzluQJeg==",
+      "path": "microsoft.entityframeworkcore/10.0.11",
+      "hashPath": "microsoft.entityframeworkcore.10.0.11.nupkg.sha512"
+    },
+    "Microsoft.EntityFrameworkCore.Abstractions/10.0.11": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-6auJR+9+9VunznKfH7WGrHMrnrmA0F7JZ22EXzwXvVhjfnbu9Xq7NSIWaOf3KJsOanM2qf5ajJ2JR5TlcPZTLA==",
+      "path": "microsoft.entityframeworkcore.abstractions/10.0.11",
+      "hashPath": "microsoft.entityframeworkcore.abstractions.10.0.11.nupkg.sha512"
+    },
+    "Microsoft.EntityFrameworkCore.Relational/10.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-DOTjTHy93W3TwpMLM4SCm0n57Sc0Jj3+m2S6LSTstKyBB34eT1UouaMS19mpWwvtj42+sRiEjA3+rOTNoNzXFQ==",
+      "path": "microsoft.entityframeworkcore.relational/10.0.4",
+      "hashPath": "microsoft.entityframeworkcore.relational.10.0.4.nupkg.sha512"
     },
     "Microsoft.Extensions.DependencyModel/10.0.0": {
       "type": "package",
@@ -837,27 +705,6 @@
       "path": "microsoft.openapi/2.7.5",
       "hashPath": "microsoft.openapi.2.7.5.nupkg.sha512"
     },
-    "Microsoft.Win32.SystemEvents/6.0.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-hqTM5628jSsQiv+HGpiq3WKBl2c8v1KZfby2J6Pr7pEPlK9waPdgEO6b8A/+/xn/yZ9ulv8HuqK71ONy2tg67A==",
-      "path": "microsoft.win32.systemevents/6.0.0",
-      "hashPath": "microsoft.win32.systemevents.6.0.0.nupkg.sha512"
-    },
-    "Newtonsoft.Json/13.0.3": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ==",
-      "path": "newtonsoft.json/13.0.3",
-      "hashPath": "newtonsoft.json.13.0.3.nupkg.sha512"
-    },
-    "NHibernate/5.4.9": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-H78ypzh1T+D2BJDQRd/IYIICplspq/s8x5YhnkXFlcIhmAH0RHIMjjqiJCXSwC+gOqBKRMsmtVvkaCXZHqd76w==",
-      "path": "nhibernate/5.4.9",
-      "hashPath": "nhibernate.5.4.9.nupkg.sha512"
-    },
     "Npgsql/10.0.3": {
       "type": "package",
       "serviceable": true,
@@ -865,19 +712,12 @@
       "path": "npgsql/10.0.3",
       "hashPath": "npgsql.10.0.3.nupkg.sha512"
     },
-    "Remotion.Linq/2.2.0": {
+    "Npgsql.EntityFrameworkCore.PostgreSQL/10.0.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-fK/76UmpC0FXBlGDFVPLJHQlDLYnGC+XY3eoDgCgbtrhi0vzbXDQ3n/IYHhqSKqXQfGw/u04A1drWs7rFVkRjw==",
-      "path": "remotion.linq/2.2.0",
-      "hashPath": "remotion.linq.2.2.0.nupkg.sha512"
-    },
-    "Remotion.Linq.EagerFetching/2.2.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-d6bkH5kROJPFsdvDy4yQved9I4ickamytPByPyuQcH9dk1ef4jciajo50vTQhheyOHeWOgLh97UvkiHV8QSgeQ==",
-      "path": "remotion.linq.eagerfetching/2.2.0",
-      "hashPath": "remotion.linq.eagerfetching.2.2.0.nupkg.sha512"
+      "sha512": "sha512-IPGrrZnRkuW7OlHDhUESZz4G5DLkW7Nej/O3Cx+0iTsgyU5XJxBgpsvTHLloo3WWuAKKbDHXBvWPVkX1deRh1Q==",
+      "path": "npgsql.entityframeworkcore.postgresql/10.0.3",
+      "hashPath": "npgsql.entityframeworkcore.postgresql.10.0.3.nupkg.sha512"
     },
     "Scalar.AspNetCore/2.16.11": {
       "type": "package",
@@ -977,47 +817,12 @@
       "path": "serilog.sinks.opentelemetry/4.2.0",
       "hashPath": "serilog.sinks.opentelemetry.4.2.0.nupkg.sha512"
     },
-    "System.Configuration.ConfigurationManager/6.0.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-7T+m0kDSlIPTHIkPMIu6m6tV6qsMqJpvQWW2jIc2qi7sn40qxFo0q+7mEQAhMPXZHMKnWrnv47ntGlM/ejvw3g==",
-      "path": "system.configuration.configurationmanager/6.0.0",
-      "hashPath": "system.configuration.configurationmanager.6.0.0.nupkg.sha512"
-    },
-    "System.Drawing.Common/6.0.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-NfuoKUiP2nUWwKZN6twGqXioIe1zVD0RIj2t976A+czLHr2nY454RwwXs6JU9Htc6mwqL6Dn/nEL3dpVf2jOhg==",
-      "path": "system.drawing.common/6.0.0",
-      "hashPath": "system.drawing.common.6.0.0.nupkg.sha512"
-    },
     "System.IdentityModel.Tokens.Jwt/8.19.1": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-2VHcRtT95GAcW1E3aVBLvL2rAAMxKHXKMXKXFyWzwgkdFXZPMMvP8tVOfnRydL4vTr1RirNuGC6T8VSEF2YsPQ==",
       "path": "system.identitymodel.tokens.jwt/8.19.1",
       "hashPath": "system.identitymodel.tokens.jwt.8.19.1.nupkg.sha512"
-    },
-    "System.Security.Cryptography.ProtectedData/6.0.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-rp1gMNEZpvx9vP0JW0oHLxlf8oSiQgtno77Y4PLUBjSiDYoD77Y8uXHr1Ea5XG4/pIKhqAdxZ8v8OTUtqo9PeQ==",
-      "path": "system.security.cryptography.protecteddata/6.0.0",
-      "hashPath": "system.security.cryptography.protecteddata.6.0.0.nupkg.sha512"
-    },
-    "System.Security.Permissions/6.0.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-T/uuc7AklkDoxmcJ7LGkyX1CcSviZuLCa4jg3PekfJ7SU0niF0IVTXwUiNVP9DSpzou2PpxJ+eNY2IfDM90ZCg==",
-      "path": "system.security.permissions/6.0.0",
-      "hashPath": "system.security.permissions.6.0.0.nupkg.sha512"
-    },
-    "System.Windows.Extensions/6.0.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-IXoJOXIqc39AIe+CIR7koBtRGMiCt/LPM3lI+PELtDIy9XdyeSrwXFdWV9dzJ2Awl0paLWUaknLxFQ5HpHZUog==",
-      "path": "system.windows.extensions/6.0.0",
-      "hashPath": "system.windows.extensions.6.0.0.nupkg.sha512"
     },
     "Template.Core.App/0.0.2": {
       "type": "project",
@@ -1030,6 +835,11 @@
       "sha512": ""
     },
     "Template.Core.Infra/0.0.2": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Template.CrossCutting/0.0.2": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

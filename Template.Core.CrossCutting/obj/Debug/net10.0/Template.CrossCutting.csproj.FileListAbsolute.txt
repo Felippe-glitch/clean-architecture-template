@@ -1,0 +1,13 @@
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.CrossCutting/bin/Debug/net10.0/Template.CrossCutting.deps.json
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.CrossCutting/bin/Debug/net10.0/Template.CrossCutting.dll
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.CrossCutting/bin/Debug/net10.0/Template.CrossCutting.pdb
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.CrossCutting/obj/Debug/net10.0/Template.CrossCutting.csproj.AssemblyReference.cache
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.CrossCutting/obj/Debug/net10.0/Template.CrossCutting.GeneratedMSBuildEditorConfig.editorconfig
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.CrossCutting/obj/Debug/net10.0/Template.CrossCutting.AssemblyInfoInputs.cache
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.CrossCutting/obj/Debug/net10.0/Template.CrossCutting.AssemblyInfo.cs
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.CrossCutting/obj/Debug/net10.0/Template.CrossCutting.csproj.CoreCompileInputs.cache
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.CrossCutting/obj/Debug/net10.0/Template.CrossCutting.sourcelink.json
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.CrossCutting/obj/Debug/net10.0/Template.CrossCutting.dll
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.CrossCutting/obj/Debug/net10.0/refint/Template.CrossCutting.dll
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.CrossCutting/obj/Debug/net10.0/Template.CrossCutting.pdb
+/home/felippestein/Área de trabalho/arquitetura_DDD/Template.Core.CrossCutting/obj/Debug/net10.0/ref/Template.CrossCutting.dll

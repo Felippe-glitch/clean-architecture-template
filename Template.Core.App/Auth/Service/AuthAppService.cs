@@ -3,10 +3,10 @@ using Mapster;
 using Microsoft.Extensions.Caching.Memory;
 
 using Template.Core.App.Auth.DataTransfer;
-using Template.Core.App.Common;
-using Template.Core.App.Usuarios.DataTransfer;
-using Template.Core.Domain.Usuarios.Entity;
-using Template.Core.Domain.Usuarios.Service;
+using Template.Core.App.Users.DataTransfer;
+using Template.Core.CrossCutting.Security;
+using Template.Core.Domain.Users.Entity;
+using Template.Core.Domain.Users.Interfaces.Service;
 using System;
 using System.Threading.Tasks;
 using System.Threading;
@@ -14,81 +14,81 @@ using System.Threading;
 namespace Template.Core.App.Auth.Service;
 
 public class AuthAppService(
-    IUsuarioService usuarioService,
+    IUserService userService,
     IPasswordHasher passwordHasher,
     IJwtTokenGenerator tokenGenerator,
     IMemoryCache cache,
     LoginLockoutSettings lockout) : IAuthAppService
 {
     /// <summary>
-    /// Mensagem única para credencial errada, conta inativa, conta inexistente e lockout.
-    /// Se o lockout tivesse mensagem própria, viraria oráculo de enumeração de contas.
+    /// Single message for wrong credentials, inactive account, nonexistent account, and lockout.
+    /// If lockout had its own message, it would become an account-enumeration oracle.
     /// </summary>
-    private const string CredenciaisInvalidas = "Login ou senha inválidos.";
+    private const string InvalidCredentials = "Invalid login or password.";
 
     public async Task<LoginResponse> LoginAsync(LoginRequest request, CancellationToken cancellationToken = default)
     {
-        string chave = ChaveLockout(request.Login);
-        cache.TryGetValue(chave, out int falhas);
+        string key = LockoutCacheKey(request.Login);
+        cache.TryGetValue(key, out int failures);
 
-        // Antes do lookup e do BCrypt: tira também a amplificação de CPU do hash como vetor.
-        if (falhas >= lockout.LockoutFalhas)
-            throw new UnauthorizedAccessException(CredenciaisInvalidas);
+        // Before the lookup and BCrypt: also removes the hash's CPU-amplification as an attack vector.
+        if (failures >= lockout.LockoutAttempts)
+            throw new UnauthorizedAccessException(InvalidCredentials);
 
-        Usuario? usuario = await usuarioService.RecuperarPorLogin(request.Login, cancellationToken);
+        User? user = await userService.GetByLogin(request.Login, cancellationToken);
 
-        if (usuario is null || !usuario.Ativo || !passwordHasher.Verificar(request.Senha, usuario.SenhaHash))
+        if (user is null || !user.Active || !passwordHasher.Verify(request.Password, user.PasswordHash))
         {
-            RegistrarFalha(chave, falhas);
-            throw new UnauthorizedAccessException(CredenciaisInvalidas);
+            RecordFailure(key, failures);
+            throw new UnauthorizedAccessException(InvalidCredentials);
         }
 
-        cache.Remove(chave);
+        cache.Remove(key);
 
-        return EmitirSessao(usuario);
+        return IssueSession(user);
     }
 
     public async Task<LoginResponse> RefreshAsync(string refreshToken, CancellationToken cancellationToken = default)
     {
-        int? usuarioId = tokenGenerator.ValidarRefreshToken(refreshToken);
-        if (usuarioId is null)
-            throw new UnauthorizedAccessException("Refresh token inválido ou expirado.");
+        int? userId = tokenGenerator.ValidateRefreshToken(refreshToken);
+        if (userId is null)
+            throw new UnauthorizedAccessException("Invalid or expired refresh token.");
 
-        Usuario usuario = await usuarioService.Validar(usuarioId.Value, cancellationToken);
-        if (!usuario.Ativo)
-            throw new UnauthorizedAccessException("Usuário inativo.");
+        User user = await userService.Validate(userId.Value, cancellationToken);
+        if (!user.Active)
+            throw new UnauthorizedAccessException("Inactive user.");
 
-        return EmitirSessao(usuario);
+        return IssueSession(user);
     }
 
-    /// <summary>Chaveado pelo login normalizado — o mesmo critério do lookup, senão variar a caixa burla o lockout.</summary>
-    private static string ChaveLockout(string login) => $"lockout:login:{Usuario.NormalizarLogin(login)}";
+    /// <summary>Keyed by the normalized login — the same criterion used for lookup, otherwise varying case would bypass the lockout.</summary>
+    private static string LockoutCacheKey(string login) => $"lockout:login:{User.NormalizeLogin(login)}";
 
     /// <summary>
-    /// Renova a janela a cada falha: o bloqueio dura <c>LockoutMinutos</c> a partir da
-    /// última tentativa, então insistir só prolonga o próprio bloqueio.
+    /// Renews the window on every failure: the lockout lasts <c>LockoutMinutes</c> from the
+    /// last attempt, so retrying only extends the lockout itself.
     /// </summary>
-    private void RegistrarFalha(string chave, int falhas)
+    private void RecordFailure(string key, int failures)
     {
-        cache.Set(chave, falhas + 1, new MemoryCacheEntryOptions
+        cache.Set(key, failures + 1, new MemoryCacheEntryOptions
         {
-            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(lockout.LockoutMinutos),
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(lockout.LockoutMinutes),
         });
     }
 
-    /// <summary>Emite um novo par access + refresh (ambos JWT, stateless).</summary>
-    private LoginResponse EmitirSessao(Usuario usuario)
+    /// <summary>Issues a new access + refresh pair (both JWTs, stateless).</summary>
+    private LoginResponse IssueSession(User user)
     {
-        (string token, DateTime expiraEm) = tokenGenerator.Gerar(usuario);
-        (string refresh, DateTime refreshExpiraEm) = tokenGenerator.GerarRefresh(usuario);
+        (string token, DateTime expiresAt) = tokenGenerator.Generate(user);
+        (string refresh, DateTime refreshExpiresAt) = tokenGenerator.GenerateRefresh(user);
 
         return new LoginResponse
         {
             Token = token,
-            ExpiraEm = expiraEm,
+            ExpiresAt = expiresAt,
             RefreshToken = refresh,
-            RefreshExpiraEm = refreshExpiraEm,
-            Usuario = usuario.Adapt<UsuarioResponse>(),
+            RefreshExpiresAt = refreshExpiresAt,
+            User = user.Adapt<UserResponse>(),
         };
     }
 }

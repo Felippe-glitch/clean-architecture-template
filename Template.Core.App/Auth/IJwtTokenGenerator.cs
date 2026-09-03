@@ -1,16 +1,16 @@
-using Template.Core.Domain.Usuarios.Entity;
+using Template.Core.Domain.Users.Entity;
 using System;
 
 namespace Template.Core.App.Auth;
 
 public interface IJwtTokenGenerator
 {
-    /// <summary>Gera o access token (curto) e devolve o token e o instante de expiração (UTC).</summary>
-    (string Token, DateTime ExpiraEm) Gerar(Usuario usuario);
+    /// <summary>Generates the (short-lived) access token and returns it along with its expiration instant (UTC).</summary>
+    (string Token, DateTime ExpiresAt) Generate(User user);
 
-    /// <summary>Gera o refresh token (JWT longo, com audience de refresh) e sua expiração (UTC).</summary>
-    (string Token, DateTime ExpiraEm) GerarRefresh(Usuario usuario);
+    /// <summary>Generates the refresh token (a long-lived JWT with a refresh audience) and its expiration (UTC).</summary>
+    (string Token, DateTime ExpiresAt) GenerateRefresh(User user);
 
-    /// <summary>Valida um refresh token statelessly. Devolve o Id do usuário se válido, ou <c>null</c>.</summary>
-    int? ValidarRefreshToken(string refreshToken);
+    /// <summary>Validates a refresh token statelessly. Returns the user's Id if valid, or <c>null</c>.</summary>
+    int? ValidateRefreshToken(string refreshToken);
 }

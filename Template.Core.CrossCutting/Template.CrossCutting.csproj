@@ -1,23 +1,13 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\Template.Core.App\Template.Core.App.csproj" />
-    <ProjectReference Include="..\Template.Core.Domain\Template.Core.Domain.csproj" />
-    <ProjectReference Include="..\Template.Core.Infra\Template.Core.Infra.csproj" />
-
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-
-    <PackageReference Include="FluentNHibernate" Version="3.4.1" />
-    <PackageReference Include="Scalar.AspNetCore" Version="2.14.14" />
-    <PackageReference Include="NHibernate" Version="5.4.9" />
-    <PackageReference Include="Npgsql" Version="10.0.3" />
+    <PackageReference Include="BCrypt.Net-Next" Version="4.2.0" />
   </ItemGroup>
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <UserSecretsId>c8e6ad40-33cc-484f-b108-9bf8de9b5c6e</UserSecretsId>
   </PropertyGroup>
 
 </Project>

@@ -9,27 +9,27 @@ using Template.Core.App.Auth.Service;
 namespace Template.Core.Api.Auth;
 
 /// <summary>
-/// Autenticação: emissão de token JWT para acesso administrativo.
+/// Authentication: issues JWT tokens for administrative access.
 /// </summary>
-/// <param name="authAppService">Serviço de aplicação responsável pela autenticação.</param>
+/// <param name="authAppService">Application service responsible for authentication.</param>
 [ApiController]
 [Route("api/[controller]")]
 [EnableRateLimiting(RateLimitConfig.AuthPolicyName)]
 public class AuthController(IAuthAppService authAppService) : ControllerBase
 {
     /// <summary>
-    /// Autentica um usuário e devolve um token JWT.
+    /// Authenticates a user and returns a JWT token.
     /// </summary>
     /// <remarks>
-    /// Exemplo de requisição:
+    /// Sample request:
     ///
     ///     POST /api/Auth/login
-    ///     { "login": "admin", "senha": "..." }
+    ///     { "login": "admin", "password": "..." }
     ///
-    /// Use o token no header <c>Authorization: Bearer &lt;token&gt;</c> nas rotas protegidas.
+    /// Use the token in the <c>Authorization: Bearer &lt;token&gt;</c> header on protected routes.
     /// </remarks>
-    /// <response code="200">Retorna o token e os dados do usuário.</response>
-    /// <response code="401">Login ou senha inválidos.</response>
+    /// <response code="200">Returns the token and the user data.</response>
+    /// <response code="401">Invalid login or password.</response>
     [AllowAnonymous]
     [HttpPost("login")]
     [ProducesResponseType<LoginResponse>(StatusCodes.Status200OK)]
@@ -40,16 +40,17 @@ public class AuthController(IAuthAppService authAppService) : ControllerBase
     }
 
     /// <summary>
-    /// Renova a sessão a partir de um refresh token válido, emitindo um novo par access/refresh.
+    /// Renews the session from a valid refresh token, issuing a new access/refresh pair.
     /// </summary>
     /// <remarks>
-    /// O refresh é <b>stateless</b> (ADR 08): o anterior <b>não</b> é rotacionado nem revogado e
-    /// continua válido até expirar. Não existe logout server-side — revogação de sessão é o
-    /// achado F4 do laudo de julho/2026, planejado para a v0.0.2 (ATOS-81). Hoje, o único modo de
-    /// invalidar sessões é rotacionar a chave de assinatura, o que derruba todas de uma vez.
+    /// Refresh is <b>stateless</b> (ADR 08): the previous refresh token is <b>not</b> rotated or
+    /// revoked and remains valid until it expires. There is no server-side logout — session
+    /// revocation is finding F4 from the July/2026 audit report, planned for v0.0.2 (ATOS-81).
+    /// Today, the only way to invalidate sessions is to rotate the signing key, which brings
+    /// down every session at once.
     /// </remarks>
-    /// <response code="200">Novo token e refresh token.</response>
-    /// <response code="401">Refresh token inválido ou expirado.</response>
+    /// <response code="200">New access token and refresh token.</response>
+    /// <response code="401">Invalid or expired refresh token.</response>
     [AllowAnonymous]
     [HttpPost("refresh")]
     [ProducesResponseType<LoginResponse>(StatusCodes.Status200OK)]

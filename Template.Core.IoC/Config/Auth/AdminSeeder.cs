@@ -2,10 +2,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-using Template.Core.App.Usuarios.DataTransfer;
-using Template.Core.App.Usuarios.Service;
-using Template.Core.Domain.Usuarios.Enums;
-using Template.Core.Domain.Usuarios.Service;
+using Template.Core.App.Users.DataTransfer;
+using Template.Core.App.Users.Interfaces.Service;
+using Template.Core.Domain.Users.Enums;
+using Template.Core.Domain.Users.Interfaces.Service;
 
 namespace Template.Core.IoC.Config.Auth;
 
@@ -19,31 +19,31 @@ public static class AdminSeeder
 
         try
         {
-            IUsuarioService usuarioService = services.GetRequiredService<IUsuarioService>();
+            IUserService userService = services.GetRequiredService<IUserService>();
 
-            if (await usuarioService.ExisteAlgum(cancellationToken))
+            if (await userService.HasAny(cancellationToken))
                 return;
 
             string? login = configuration["AdminSeed:Login"];
-            string? senha = configuration["AdminSeed:Senha"];
+            string? password = configuration["AdminSeed:Password"];
             string? email = configuration["AdminSeed:Email"];
 
-            if (string.IsNullOrWhiteSpace(login) || string.IsNullOrWhiteSpace(senha) || string.IsNullOrWhiteSpace(email))
+            if (string.IsNullOrWhiteSpace(login) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(email))
             {
-                logger.LogWarning("Nenhum usuário cadastrado e 'AdminSeed' (Login/Senha/Email) não configurado — admin inicial não criado.");
+                logger.LogWarning("No users registered and 'AdminSeed' (Login/Password/Email) not configured — initial admin not created.");
                 return;
             }
 
-            IUsuarioAppService usuarioAppService = services.GetRequiredService<IUsuarioAppService>();
-            await usuarioAppService.RegistrarAsync(
-                new UsuarioRegistrarRequest { Login = login, Senha = senha, Email = email, Role = UsuarioRoleEnum.ADMIN },
+            IUserAppService userAppService = services.GetRequiredService<IUserAppService>();
+            await userAppService.RegisterAsync(
+                new RegisterUserRequest { Login = login, Password = password, Email = email, Role = UserRole.ADMIN },
                 cancellationToken);
 
-            logger.LogInformation("Admin inicial '{Login}' criado a partir de AdminSeed.", login);
+            logger.LogInformation("Initial admin '{Login}' created from AdminSeed.", login);
         }
         catch (Exception ex)
         {
-            logger.LogWarning(ex, "Não foi possível semear o admin inicial. A migração ATOS-020 (tabela 'usuario') foi aplicada?");
+            logger.LogWarning(ex, "Could not seed the initial admin. Has migration ATOS-020 (table 'users') been applied?");
         }
     }
 }

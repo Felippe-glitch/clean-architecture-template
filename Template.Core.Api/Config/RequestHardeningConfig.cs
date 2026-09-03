@@ -4,17 +4,17 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 namespace Template.Core.Api.Config;
 
 /// <summary>
-/// Endurecimento de request: teto de tamanho do corpo (Kestrel) e timeout padrão por
-/// requisição. Protege endpoints públicos contra payloads gigantes e requests que
-/// seguram conexão. Valores em <c>RequestLimits</c>. Fica no projeto da API por
-/// depender do framework ASP.NET Core (Kestrel/RequestTimeouts).
+/// Request hardening: request body size cap (Kestrel) and a default per-request timeout.
+/// Protects public endpoints against oversized payloads and requests that hold a
+/// connection open. Values live under <c>RequestLimits</c>. Lives in the API project
+/// because it depends on the ASP.NET Core framework (Kestrel/RequestTimeouts).
 /// </summary>
 public static class RequestHardeningConfig
 {
     public static IServiceCollection AddRequestHardening(this IServiceCollection services, IConfiguration configuration)
     {
-        // 12 MB por padrão: acomoda o upload de flyer (multipart) do EventoController
-        // sem abrir espaço para abuso. Acima disso o Kestrel responde 413.
+        // 12 MB by default: accommodates typical multipart uploads without leaving room
+        // for abuse. Above that, Kestrel responds with 413.
         long maxBodyBytes = configuration.GetValue("RequestLimits:MaxBodyBytes", 12L * 1024 * 1024);
         int timeoutSeconds = configuration.GetValue("RequestLimits:TimeoutSeconds", 30);
 
@@ -47,4 +47,3 @@ public static class RequestHardeningConfig
         });
     }
 }
-

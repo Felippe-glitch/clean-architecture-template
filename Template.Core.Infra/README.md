@@ -1,79 +1,88 @@
-# Camada `Infra` — Persistência
+# `Infra` layer — Persistence
 
-> Implementa os contratos de repositório do `Domain` sobre **NHibernate** e mapeia as entidades
-> para o banco com **FluentNHibernate**. Referencia só o `Domain`.
+> Implements the `Domain`'s repository contracts on top of **EF Core** and maps entities to the
+> database with the Fluent API (`IEntityTypeConfiguration<T>`). References `Domain`, `App`
+> (for `IUnitOfWork`), and `CrossCutting`.
 
-## Responsabilidade
+## Responsibility
 
-- **Mapeamento objeto-relacional** (`*Map`/`*ClassMap`): tabela, colunas, chaves, relacionamentos.
-- **Repositórios concretos** (`<Feature>Repository`) que herdam `GenericRepository<T>` e implementam
-  `I<Feature>Repository` do `Domain` — montam as queries LINQ e delegam a paginação/ordenação ao
-  genérico.
-- Tipos utilitários de persistência (`Common/DateOnlyType.cs`).
+- **Object-relational mapping** (`*Configuration`): table, columns, keys, conversions.
+- **Concrete repositories** (`<Feature>Repository`) that inherit `GenericRepository<T>` and
+  implement `Domain`'s `I<Feature>Repository` — they build the LINQ queries and delegate
+  pagination/ordering to the generic base.
+- The EF Core `DbContext` (`TemplateDbContext`) and the `IUnitOfWork` implementation
+  (`Common/UnitOfWork.cs`, wrapping `SaveChangesAsync`).
 
-## O que vive aqui
+## What lives here
 
 ```
 Infra/
-├─ GenericRepository.cs                 # CRUD + paginação/ordenação por reflexão
-├─ <Feature>/Mappers/<Feature>Map.cs    # FluentNHibernate ClassMap
-└─ <Feature>/Repository/<Feature>Repository.cs
+├─ TemplateDbContext.cs                     # DbSets + OnModelCreating (scans *Configuration)
+├─ GenericRepository.cs                     # CRUD + pagination/ordering via reflection
+├─ Common/UnitOfWork.cs                     # IUnitOfWork.CommitAsync → SaveChangesAsync
+├─ Settings/PostgreSqlSettings.cs           # connection string bound from appsettings
+└─ <Feature>/
+   ├─ Mappers/<Feature>Configuration.cs     # IEntityTypeConfiguration<T> (Fluent API)
+   └─ Repository/<Feature>Repository.cs
 ```
 
-## Padrões (idiomas reais)
+## Patterns (real examples)
 
-### Mapeamento (FluentNHibernate)
+### Mapping (EF Core Fluent API)
 ```csharp
-public class DepartamentoMap : ClassMap<Departamento>
+public class UserConfiguration : IEntityTypeConfiguration<User>
 {
-    public DepartamentoMap()
+    public void Configure(EntityTypeBuilder<User> builder)
     {
-        Table("departamento");
-        Id(x => x.Id).Column("id").GeneratedBy.Identity();
-        Map(x => x.Titulo).Column("titulo");
-        References(x => x.Lider).Column("lider");          // muitos-p/-um (FK)
-        HasMany(x => x.Eventos).KeyColumn("departamento").Inverse();  // um-p/-muitos
+        builder.ToTable("users");
+        builder.HasKey(u => u.Id);
+        builder.Property(u => u.Id).HasColumnName("id").ValueGeneratedOnAdd();
+        builder.Property(u => u.Login).HasColumnName("login");
+        builder.Property(u => u.PasswordHash).HasColumnName("password_hash");
+        builder.Property(u => u.Role).HasColumnName("role").HasConversion<int>();
     }
 }
 ```
-- Tabelas/colunas em **snake_case minúsculo** (casam com o schema do Postgres — ver
-  `../../migrations/ATOS` e `docs/DATABASE.md`).
-- `References` = FK (lado “muitos”); `HasMany(...).Inverse()` = coleção (lado “um”).
-- Os `*Map` são varridos automaticamente pelo `IoC` (`NHibernateConfig`); **não** precisa registrar
-  cada um manualmente.
+- Tables/columns in **lowercase snake_case**.
+- The `*Configuration` classes are discovered automatically by `TemplateDbContext.OnModelCreating`
+  via `modelBuilder.ApplyConfigurationsFromAssembly(...)` — no need to register each one manually.
+- There are no EF Core Migrations in this project yet; the schema is currently applied manually
+  (see the `ATOS-020` reference in `AdminSeeder.cs`). Keep the physical table/columns in sync with
+  each `*Configuration` by hand until migrations are introduced.
 
-### Repositório concreto
+### Concrete repository
 ```csharp
-public class DepartamentoRepository(ISession Session)
-    : GenericRepository<Departamento>(Session), IDepartamentoRepository
+public class UserRepository(TemplateDbContext context)
+    : GenericRepository<User>(context), IUserRepository
 {
-    public async Task<PaginatedResult<Departamento>> Filtrar(DepartamentoListarFilter filter, int pg, int qt, string cpOrd, TipoOrdenacao tpOrd)
+    public async Task<PaginatedResult<User>> FilterAsync(ListUsersFilter filters, int page, int pageSize, string sortBy, SortDirection sortDirection, CancellationToken ct)
     {
-        IQueryable<Departamento> query = _session.Query<Departamento>();
-        if (!string.IsNullOrWhiteSpace(filter.Titulo)) query = query.Where(x => x.Titulo.Contains(filter.Titulo));
-        if (filter.Igreja.HasValue)                    query = query.Where(x => x.Igreja.Id == filter.Igreja.Value);
-        return await ListarAsync(query, pg, qt, cpOrd, tpOrd);   // paginação/ordenação no genérico
+        IQueryable<User> query = _context.Users;
+        if (filters.Active.HasValue) query = query.Where(u => u.Active == filters.Active.Value);
+        return await ListAsync(query, page, pageSize, sortBy, sortDirection); // pagination/ordering in the generic base
     }
 }
 ```
-- Cada filtro é aplicado **condicionalmente** (só quando preenchido) sobre `_session.Query<T>()`.
-- **Nunca** materialize antes de filtrar (`.ToList()` só no genérico, via `ListarAsync`).
+- Each filter is applied **conditionally** (only when set) on top of `_context.Set<T>()`.
+- **Never** materialize before filtering (`.ToList()` only happens in the generic base, inside `ListAsync`).
 
 ### `GenericRepository<T>`
-- Oferece `RecuperarAsync/InserirAsync/AtualizarAsync/DeletarAsync` (async da `ISession`) e
-  `ListarAsync(query, pagina, qt, cpOrd, tpOrd)` com **ordenação dinâmica por reflexão** (monta a
-  `Expression` de `OrderBy(...)` pelo nome da coluna; cai em `Id` se o campo não existir).
+- Provides `GetAsync/InsertAsync/UpdateAsync/DeleteAsync` (over the `DbContext`) and
+  `ListAsync(query, page, pageSize, sortBy, sortDirection)` with **dynamic ordering via
+  reflection** (builds an `OrderBy(...)` `Expression` from the column name; falls back to `Id` if
+  the field doesn't exist).
+- The repository **doesn't commit**: `InsertAsync`/`UpdateAsync` only track the entity on the
+  `DbContext`. Committing is the application service's job, via `IUnitOfWork.CommitAsync()`.
 
-## Como adicionar persistência de uma feature
+## Adding persistence for a feature
 
-1. `Mappers/<Feature>Map.cs` — `ClassMap<Entidade>` com `Table`, `Id`, `Map`, `References`/`HasMany`.
-2. `Repository/<Feature>Repository.cs` — `: GenericRepository<Entidade>(Session), I<Feature>Repository`
-   e implemente `Filtrar(...)`.
-3. Registre o repo no `IoC` (`AddInfra`) — o `*Map` é descoberto sozinho.
-4. Garanta a tabela/colunas via **migração Liquibase** (`../../migrations/ATOS`).
+1. `Mappers/<Feature>Configuration.cs` — `IEntityTypeConfiguration<Entity>` with `ToTable`,
+   `HasKey`, `Property`, relationships.
+2. `Repository/<Feature>Repository.cs` — `: GenericRepository<Entity>(context), I<Feature>Repository`
+   and implement `FilterAsync(...)`.
+3. Register the repo in `IoC` (`AddInfra`) — the `*Configuration` is discovered on its own.
+4. Make sure the table/columns exist in the actual database (manually, until migrations exist).
 
-## Regras
-- Entidades mapeadas precisam de membros `virtual` e ctor `protected` (proxy do NHibernate) — isso é
-  garantido no `Domain`.
-- Não coloque regra de negócio aqui: repositório só busca/grava. Regra é do `Domain`.
-- Não abra transação aqui (é da `App`/`UnitOfWork`).
+## Rules
+- No business rules here: a repository only reads/writes. Business rules belong in `Domain`.
+- Don't open a transaction here (that's `App`'s job, via `IUnitOfWork`).

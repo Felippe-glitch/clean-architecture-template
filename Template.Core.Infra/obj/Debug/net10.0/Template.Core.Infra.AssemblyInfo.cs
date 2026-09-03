@@ -10,10 +10,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("203541db-f161-4c27-9191-91bf18411825")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("Template.Core.Infra")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("0.0.2.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("0.0.2+035898078bf2ebb3335f2babeed6dbba67a9d961")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("0.0.2+d0d8be22141ab0bfcd1612b49717eef95e9fa740")]
 [assembly: System.Reflection.AssemblyProductAttribute("Template.Core.Infra")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Template.Core.Infra")]
 [assembly: System.Reflection.AssemblyVersionAttribute("0.0.2.0")]

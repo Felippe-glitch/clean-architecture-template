@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Template.Core.Domain.Abstractions.Exceptions;
+using Template.Core.CrossCutting.Exceptions;
 
 public class GlobalExceptionHandler : IExceptionHandler
 {
@@ -23,22 +23,22 @@ public class GlobalExceptionHandler : IExceptionHandler
         Exception exception,
         CancellationToken cancellationToken)
     {
-        _logger.LogError(exception, "Ocorreu uma exceção não tratada: {Message}", exception.Message);
+        _logger.LogError(exception, "An unhandled exception occurred: {Message}", exception.Message);
 
-        // Exceções de negócio mapeadas carregam mensagens intencionais e seguras (podem ir ao cliente);
-        // o ramo _ representa erro não previsto (500), cujo Message pode expor internals do NHibernate,
-        // nomes de tabela/coluna, etc. Por isso ele é mascarado fora de Development.
+        // Mapped business exceptions carry intentional, safe messages (fine to send to the client);
+        // the _ branch represents an unexpected error (500), whose Message may expose EF Core
+        // internals, table/column names, etc. That's why it's masked outside Development.
         var (statusCode, message, exposeDetail) = exception switch
         {
-            EntidadeDesativadaException => (StatusCodes.Status409Conflict, "Houve um conflito", true),
-            EntidadeNaoEncontradaException => (StatusCodes.Status404NotFound, "Recurso não encontrado.", true),
-            RegraDeNegocioVioladaException => (StatusCodes.Status422UnprocessableEntity, "Violação de regra de negocio", true),
-            UnauthorizedAccessException => (StatusCodes.Status401Unauthorized, "Não autorizado.", true),
-            // Erros de request do proprio Kestrel/pipeline (ex.: corpo acima do limite -> 413);
-            // honra o status embutido em vez de mascarar como 500.
-            BadHttpRequestException bad => (bad.StatusCode, "Requisição inválida.", false),
-            ArgumentException => (StatusCodes.Status400BadRequest, "Argumento inválido.", true),
-            _ => (StatusCodes.Status500InternalServerError, "Erro interno.", false)
+            EntityDeactivatedException => (StatusCodes.Status409Conflict, "A conflict occurred", true),
+            EntityNotFoundException => (StatusCodes.Status404NotFound, "Resource not found.", true),
+            BusinessRuleException => (StatusCodes.Status422UnprocessableEntity, "Business rule violation", true),
+            UnauthorizedAccessException => (StatusCodes.Status401Unauthorized, "Unauthorized.", true),
+            // Request errors from Kestrel/the pipeline itself (e.g., body over the limit -> 413);
+            // honors the embedded status instead of masking it as 500.
+            BadHttpRequestException bad => (bad.StatusCode, "Invalid request.", false),
+            ArgumentException => (StatusCodes.Status400BadRequest, "Invalid argument.", true),
+            _ => (StatusCodes.Status500InternalServerError, "Internal error.", false)
         };
 
         var problemDetails = new ProblemDetails
@@ -47,13 +47,13 @@ public class GlobalExceptionHandler : IExceptionHandler
             Title = message,
             Detail = (exposeDetail || _environment.IsDevelopment())
                 ? exception.Message
-                : "Ocorreu um erro inesperado. Tente novamente mais tarde."
+                : "An unexpected error occurred. Please try again later."
         };
 
         httpContext.Response.StatusCode = problemDetails.Status.Value;
 
         await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
 
-        return true; 
+        return true;
     }
 }

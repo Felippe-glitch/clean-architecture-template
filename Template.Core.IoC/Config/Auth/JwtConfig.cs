@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
 using Template.Core.App.Auth;
-using Template.Core.Domain.Usuarios.Enums;
 
 namespace Template.Core.IoC.Config.Auth;
 
@@ -19,14 +18,14 @@ public static class JwtConfig
         JwtSettings settings = new();
         configuration.GetSection("Jwt").Bind(settings);
 
-        if (!settings.EstaConfigurado)
-            throw new Exception("Chave do JWT não configurada (seção 'Jwt:Key').");
+        if (!settings.IsConfigured)
+            throw new Exception("JWT signing key not configured (section 'Jwt:Key').");
 
-        if (!settings.ChaveTemForcaSuficiente)
+        if (!settings.HasSufficientKeyStrength)
             throw new Exception(
-                $"Chave do JWT fraca: 'Jwt:Key' tem {settings.TamanhoChaveBytes} bytes e o mínimo " +
-                $"para HS256 é {JwtSettings.TamanhoMinimoChaveBytes}. Gere uma nova com " +
-                "'openssl rand -base64 48' e aplique em Jwt__Key.");
+                $"Weak JWT signing key: 'Jwt:Key' has {settings.SigningKeyBytes} bytes and the minimum " +
+                $"for HS256 is {JwtSettings.MinimumSigningKeyBytes}. Generate a new one with " +
+                "'openssl rand -base64 48' and set it in Jwt__Key.");
 
         services.AddSingleton(settings);
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
@@ -55,7 +54,7 @@ public static class JwtConfig
                         var roleClaim = context.Principal?.FindFirst(ClaimTypes.Role) ?? context.Principal?.FindFirst("role");
                         if (roleClaim is null || string.IsNullOrWhiteSpace(roleClaim.Value))
                         {
-                            context.Fail("Token JWT não possui claim obrigatória de Role.");
+                            context.Fail("JWT token is missing the required Role claim.");
                         }
 
                         return Task.CompletedTask;
@@ -63,19 +62,11 @@ public static class JwtConfig
                 };
             });
 
-        services.AddSingleton<IAuthorizationHandler, PermissaoHandler>();
-
         services.AddAuthorization(options =>
         {
             options.FallbackPolicy = new AuthorizationPolicyBuilder()
                 .RequireAuthenticatedUser()
                 .Build();
-
-            foreach (Permissao permissao in Enum.GetValues<Permissao>())
-            {
-                options.AddPolicy(permissao.ToString(), policy =>
-                    policy.Requirements.Add(new PermissaoRequirement(permissao)));
-            }
         });
 
         return services;
