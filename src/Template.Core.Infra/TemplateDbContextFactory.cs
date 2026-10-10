@@ -32,7 +32,7 @@ public class TemplateDbContextFactory : IDesignTimeDbContextFactory<TemplateDbCo
         if (string.IsNullOrWhiteSpace(settings.Host))
             throw new InvalidOperationException(
                 "Databases:PostgreSql:Host could not be resolved for `dotnet ef`. Run the command " +
-                "from the repository root (so Template.Core.Api/appsettings.Development.json is " +
+                "from the repository root (so src/Template.Core.Api/appsettings.Development.json is " +
                 "found), or set the Databases__PostgreSql__* environment variables — e.g. " +
                 "Databases__PostgreSql__Host=localhost.");
 
@@ -48,6 +48,7 @@ public class TemplateDbContextFactory : IDesignTimeDbContextFactory<TemplateDbCo
 
         string[] candidates =
         [
+            Path.Combine(Directory.GetCurrentDirectory(), "src", apiFolderName),
             Path.Combine(Directory.GetCurrentDirectory(), apiFolderName),
             Path.Combine(Directory.GetCurrentDirectory(), "..", apiFolderName),
             Directory.GetCurrentDirectory(),

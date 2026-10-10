@@ -43,7 +43,7 @@ public static class AdminSeeder
         }
         catch (Exception ex)
         {
-            logger.LogWarning(ex, "Could not seed the initial admin. Is the database reachable and up to date with Template.Core.Infra/Migrations (table 'users')?");
+            logger.LogWarning(ex, "Could not seed the initial admin. Is the database reachable and up to date with src/Template.Core.Infra/Migrations (table 'users')?");
         }
     }
 }

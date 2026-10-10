@@ -12,24 +12,24 @@ WORKDIR /src
 # restore) is cached and skipped on every rebuild unless a dependency
 # actually changed, instead of invalidating on any .cs edit.
 COPY Directory.Build.props ./
-COPY Template.Core.Api/Template.Core.Api.csproj Template.Core.Api/
-COPY Template.Core.App/Template.Core.App.csproj Template.Core.App/
-COPY Template.Core.Domain/Template.Core.Domain.csproj Template.Core.Domain/
-COPY Template.Core.Infra/Template.Core.Infra.csproj Template.Core.Infra/
-COPY Template.Core.IoC/Template.Core.IoC.csproj Template.Core.IoC/
-COPY Template.Core.CrossCutting/Template.CrossCutting.csproj Template.Core.CrossCutting/
+COPY src/Template.Core.Api/Template.Core.Api.csproj src/Template.Core.Api/
+COPY src/Template.Core.App/Template.Core.App.csproj src/Template.Core.App/
+COPY src/Template.Core.Domain/Template.Core.Domain.csproj src/Template.Core.Domain/
+COPY src/Template.Core.Infra/Template.Core.Infra.csproj src/Template.Core.Infra/
+COPY src/Template.Core.IoC/Template.Core.IoC.csproj src/Template.Core.IoC/
+COPY src/Template.Core.CrossCutting/Template.CrossCutting.csproj src/Template.Core.CrossCutting/
 
-RUN dotnet restore Template.Core.Api/Template.Core.Api.csproj
+RUN dotnet restore src/Template.Core.Api/Template.Core.Api.csproj
 
 # Now bring in the rest of the source and publish (Release, no re-restore).
-COPY Template.Core.Api/ Template.Core.Api/
-COPY Template.Core.App/ Template.Core.App/
-COPY Template.Core.Domain/ Template.Core.Domain/
-COPY Template.Core.Infra/ Template.Core.Infra/
-COPY Template.Core.IoC/ Template.Core.IoC/
-COPY Template.Core.CrossCutting/ Template.Core.CrossCutting/
+COPY src/Template.Core.Api/ src/Template.Core.Api/
+COPY src/Template.Core.App/ src/Template.Core.App/
+COPY src/Template.Core.Domain/ src/Template.Core.Domain/
+COPY src/Template.Core.Infra/ src/Template.Core.Infra/
+COPY src/Template.Core.IoC/ src/Template.Core.IoC/
+COPY src/Template.Core.CrossCutting/ src/Template.Core.CrossCutting/
 
-RUN dotnet publish Template.Core.Api/Template.Core.Api.csproj \
+RUN dotnet publish src/Template.Core.Api/Template.Core.Api.csproj \
     -c Release \
     -o /app/publish \
     --no-restore

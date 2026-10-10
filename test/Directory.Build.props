@@ -1,5 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project>
 
+  <!-- Chains up to the root Directory.Build.props (product <Version>), which MSBuild
+       would otherwise stop looking for once it finds this file. -->
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <!-- Shared by every test project under test/ — keeps the test stack on one version. -->
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -10,17 +15,12 @@
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.4" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
-    <PackageReference Include="NSubstitute" Version="5.3.0" />
-	 <PackageReference Include="xunit.v3" Version="3.2.2" />
+    <PackageReference Include="xunit.v3" Version="3.2.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="Xunit" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Template.Core.Domain\Template.Core.Domain.csproj" />
   </ItemGroup>
 
 </Project>

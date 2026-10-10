@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Framework, test packages and global usings come from test/Directory.Build.props. -->
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Template.Core.Domain\Template.Core.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
